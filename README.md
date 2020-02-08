@@ -116,6 +116,8 @@ The example below shows a response mapping. An Offer is returned as a result of 
 
 ?> _TODO_ A short tip about potential actions.
 
+?> _TODO_ Check the Function Ontology from imec Gent for describing functions.
+
 !> **Thibault** please check the syntax. 
 
 ```yaml
