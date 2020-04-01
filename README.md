@@ -1,9 +1,13 @@
 # Introduction
 The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it for the annotation of HTTP APIs. 
 
+?> _TODO_ mention SHACL
+
+# SHACL
+
 # Schema.org Actions
 
-
+?> _TODO_ intro to actions and its relation to SHACL
 
 # Conceptualization
 
