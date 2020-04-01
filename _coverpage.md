@@ -1,8 +1,8 @@
 ![logo](_media/icon.svg)
 
-# docsify <small>3.5</small>
+# Web API Annotations with Schema.org Actions
 
-> A specification for schema.org actions for annotating HTTP Web APIs .
+> A specification for schema.org actions for annotating Web APIs .
 
 Questions? Create an issue on GitHub or contact me.
 
