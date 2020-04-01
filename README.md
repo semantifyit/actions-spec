@@ -1,13 +1,32 @@
+# Introduction
+The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it for the annotation of HTTP APIs. 
+
+# Schema.org Actions
+
+
 
 # Conceptualization
 
 A schema.org action can have one of four statuses depending on its state. We map different stages of the client-API interaction to schema.org action statuses.
 
+**Resource Description**: The description of an operation on a specific resource. This action is in **PotentialActionStatus**. 
+
 **Request**: An action instance with all required parameters (and possible optional) parameters are filled. This action is in **ActiveActionStatus**.
+
+**Response**: A (lifted) response from the server to a request. This action instance is in **CompletedActionStatus**.
 
 # Specification
 
+
 ## Resource Description
+
+A resource description is an extended SHACL node shape. It consists of the following elements:
+### ID
+Required. The URI of the resource description.
+### Target Class
+Required. The type of the operation described. A subtype of schema:Action (e.g., BuyAction).
+
+ 
 
 ## Resource Linking
 
