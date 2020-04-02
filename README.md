@@ -1,13 +1,20 @@
 # Introduction
-The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it for the annotation of HTTP APIs. 
+The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
 
-?> _TODO_ mention SHACL
+?> _TODO_ mention domain specification
 
-# SHACL
+# Domain Specification
+
+A domain specification is a process to create a domain specific pattern, which is an extended subset of schema.org. schema.org is a large vocabulary that covers several domains in a shallow way. To create a domain specific pattern, the domain specification process applies an operator on schema.org to remove the types and properties that are not relevant for the given domain, defines local properties on the remaining types and applies additional constraints on the ranges and values of remaining properties. The syntax of domain specification operator is a subset of [Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/). The semantics is _slightly_ [different](https://drive.google.com/file/d/1BmAikrlw8lRMZWrXT1sFfHZUEPruEbcy/view). 
+
+!> **_Relationship between SHACL and Domain Specifications_**: SHACL is a language that is built around the notion of *shape* in order to verify RDF graphs. A shape is either a node shape that applies constraints on nodes in an RDF graph, or a property shape that does the same to properties. In principle, we use SHACL as is, but we apply stricter syntax rules in terms of which constraint components can be applied on which type of shapes and how the shapes are interpreted (semantics). For instance, multiple target definitions are interpreted as disjunction in SHACL, but as a conjunction in domain specification approach.
+
+
+?> _TODO_ add venn diagram
 
 # Schema.org Actions
 
-?> _TODO_ intro to actions and its relation to SHACL
+?> _TODO_ intro to actions and its relation to domain specifications
 
 # Conceptualization
 
@@ -133,6 +140,8 @@ An action processing client should first make the necessary request to the linke
 
 ### Grounding (Request Mapping)
 
+?> _TODO_ will be done with an extended version of Xquery and Handlebars.
+
 ### Lifting (Response Mapping)
 
 The example below shows a response mapping. An Offer is returned as a result of a SearchAction. A potential action is attached to the Offer instance,with the result of a smtfy:link function as its object. This function returns an action (a SHACL node shape with targetClass schema:Action and its subtypes) with the given parameters filled with the specified value (schema:identifier is filled with the ID of the returned Offer).
@@ -179,3 +188,10 @@ functions:
 
 
 # Use Case: Dialog Generation from API Annotations
+
+# Appendix 
+## Abstract Syntax
+
+TBD
+
+## Appendix: Domain Specification for Resource Description Annotations

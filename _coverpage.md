@@ -1,4 +1,4 @@
-![logo](_media/icon.svg)
+![logo](_media/logo.svg)
 
 # Web API Annotations with Schema.org Actions
 
