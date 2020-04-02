@@ -1,0 +1,12 @@
+.figure {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.caption {
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    width: 100%;
+}

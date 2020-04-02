@@ -1,26 +1,43 @@
 # Introduction
 The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
 
-?> _TODO_ mention domain specification
 
 # Domain Specification
 
 A domain specification is a process to create a domain specific pattern, which is an extended subset of schema.org. schema.org is a large vocabulary that covers several domains in a shallow way. To create a domain specific pattern, the domain specification process applies an operator on schema.org to remove the types and properties that are not relevant for the given domain, defines local properties on the remaining types and applies additional constraints on the ranges and values of remaining properties. The syntax of domain specification operator is a subset of [Shapes Constraint Language (SHACL)](https://www.w3.org/TR/shacl/). The semantics is _slightly_ [different](https://drive.google.com/file/d/1BmAikrlw8lRMZWrXT1sFfHZUEPruEbcy/view). 
 
+![ds process](_media/ds-process.svg  ':class=figure' )
+
+<center><span class="caption">The domain specification process.</span></center>
+
+
 !> **_Relationship between SHACL and Domain Specifications_**: SHACL is a language that is built around the notion of *shape* in order to verify RDF graphs. A shape is either a node shape that applies constraints on nodes in an RDF graph, or a property shape that does the same to properties. In principle, we use SHACL as is, but we apply stricter syntax rules in terms of which constraint components can be applied on which type of shapes and how the shapes are interpreted (semantics). For instance, multiple target definitions are interpreted as disjunction in SHACL, but as a conjunction in domain specification approach.
 
+?> _TODO_ add an example domain specification 
 
-?> _TODO_ add venn diagram
 
 # Schema.org Actions
 
-?> _TODO_ intro to actions and its relation to domain specifications
+Schema.org contains an [Action](https://schema.org/Action) type to provide a mechanism to define actions that can be take on entities. In the context of schema.org, the actions are quite generic. For example, the [Action](https://schema.org/Action) type includes properties like startTime and endTime to describe the time span an action occurred or the location property to describe where the action took place. We restrict and extend the properties defined for the [Action](https://schema.org/Action) type and consequently its subtypes in order to make them more specific to a Web API annotation task.
+The table below shows the properties of Action type we use for the Web API annotations.
+
+|    Property    |            Range            | Description |
+|:--------------:|:---------------------------:|:-----------:|
+|  actionStatus  |       ActionStatusType      |             |
+| authentication | AuthenticationSpecification |             |
+|     object     |            Thing            |             |
+|     result     |            Thing            |             |
+|     target     |          EntryPoint         |             |
+|      error     |            Error            |             |
+
 
 # Conceptualization
 
 A schema.org action can have one of four statuses depending on its state. We map different stages of the client-API interaction to schema.org action statuses.
 
 **Resource Description**: The description of an operation on a specific resource. This action is in **PotentialActionStatus**. 
+
+?> See [Appendix](#appendix) for the domain specification operator that defines the Action pattern for resource descriptions.
 
 **Request**: An action instance with all required parameters (and possible optional) parameters are filled. This action is in **ActiveActionStatus**.
 
@@ -194,4 +211,4 @@ functions:
 
 TBD
 
-## Appendix: Domain Specification for Resource Description Annotations
+## Domain Specification for Resource Description Annotations
