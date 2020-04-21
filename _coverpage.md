@@ -1,6 +1,6 @@
 ![logo](_media/logo.svg)
 
-# Web API Annotations with Schema.org Actions
+# **W**eb API **A**nnotations with **S**chema.org **A**ctions (**WASA**)
 
 > A specification for schema.org actions for annotating Web APIs .
 

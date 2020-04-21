@@ -18,18 +18,52 @@ A domain specification is a process to create a domain specific pattern, which i
 
 # Schema.org Actions
 
-Schema.org contains an [Action](https://schema.org/Action) type to provide a mechanism to define actions that can be take on entities. In the context of schema.org, the actions are quite generic. For example, the [Action](https://schema.org/Action) type includes properties like startTime and endTime to describe the time span an action occurred or the location property to describe where the action took place. We restrict and extend the properties defined for the [Action](https://schema.org/Action) type and consequently its subtypes in order to make them more specific to a Web API annotation task.
-The table below shows the properties of Action type we use for the Web API annotations.
+Schema.org contains an [Action](https://schema.org/Action) type to provide a mechanism to define actions that can be take on entities. In the context of schema.org, the actions are quite generic. For example, the [Action](https://schema.org/Action) type includes properties like **startTime** and **endTime** to describe the time span an action occurred or the **location** property to describe where the action took place. We restrict and extend the properties defined for the [Action](https://schema.org/Action) type and consequently its subtypes in order to make them more specific to a Web API annotation task.
+The table below shows the properties of Action type we use for the Web API annotations (Italic properties and types indicate that they come from the semantify.it actions extension).
 
-|    Property    |            Range            | Description |
+|    **Property**    |            **Range**            | **Description** |
 |:--------------:|:---------------------------:|:-----------:|
-|  actionStatus  |       ActionStatusType      |             |
-| authentication | AuthenticationSpecification |             |
-|     object     |            Thing            |             |
-|     result     |            Thing            |             |
-|     target     |          EntryPoint         |             |
-|      error     |            Error            |             |
+|  actionStatus  |       ActionStatusType      |           Indicates the current disposition of the Action.  |
+| _authentication_ | _AuthenticationSpecification_ |        A specification for different authentication methods.     |
+|     object     |            Thing            |       The object upon which the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read a book.      |
+|     result     |            Thing            |      The result produced in the action. e.g. John wrote a book.       |
+|     target     |          EntryPoint         |      Indicates a target EntryPoint for an Action.       |
+|      error     |            _Error_            |      An error specification.       |
 
+## Input-Output Parameters
+
+Schema.org actions provide a mechanism to define the input and output parameters of an action. In terms of syntax, this is merely an extension to the name of the property. According to the actions [documentation](https://schema.org/docs/actions.html), the parameter convention is as follows:
+
+
+|**Property** | **Range** | **Description**|
+|:---------:|:----------:|:---------:|
+| &lt;property&gt;-input | PropertyValueSpecification | Indicates how a property should be filled in before initiating the action. |
+| &lt;property&gt;-output | PropertyValueSpecification | Indicates how the field will be filled in when the action is completed. |
+
+The PropertyValueSpecification type contains several properties that reflect the input attributes in HTML forms. These properties enable the description of the nature of input and output (Italic property indicates a property from the semantify.it actions extension).
+
+[PropertyValueSpecification](http://schema.org/PropertyValueSpecification)
+
+
+**Property** | **Range** | **Description**
+:---------:|:----------:|:---------:
+ valueRequired | Boolean | Whether the property must be filled in to complete the action.
+ defaultValue | Thing, DataType | The default value for the property.  For properties that expect a DataType, it's a literal value, for properties that expect an object, it's an ID reference to one of the current values
+ valueName | Text | Indicates the name of the PropertyValueSpecification to be used in URL templates and form encoding
+ readonlyValue | Boolean | Whether or not a property is mutable
+ multipleValues | Boolean | Whether multiple values are allowed for the property.
+ valueMinLength | Number | Specifies the minimum number of characters in a literal value. 
+ valueMaxLength | Text | Specifies the maximum number of characters in a literal value. 
+ valuePattern | Text | Specifies a regular expression for testing literal values 
+ minValue | Number, Date, Time, DateTime | Specifies the allowed range and intervals for literal values.  
+ maxValue | Number, Date, Time, DateTime | The upper value of some characteristic or property. 
+ stepValue | Number | The step attribute indicates the granularity that is expected (and required) of the value.
+ _valueList_ | [SHACL List](https://www.w3.org/TR/shacl/#dfn-shacl-list) | A list of possible values for the property.
+
+?> The input and output properties on an Action support a syntactical shorthand. One can write `<property>-input: "required maxlength=100 name=q"` in order to specify a required input parameter named **q** with maximum length of 100 characters. See the [documentation](https://schema.org/docs/actions.html) for details.
+
+## Potential Actions
+The schema.org vocabulary defines a potentialAction property that enables the connection of actions on instances. Informally, the instance to which an potential action is connected is the object of that action. For a more formal definition for Web API annotation, see the [specification](#specification).
 
 # Conceptualization
 
@@ -53,7 +87,6 @@ A resource description is an extended SHACL node shape. It consists of the follo
 Required. The URI of the resource description.
 ### Target Class
 Required. The type of the operation described. A subtype of schema:Action (e.g., BuyAction).
-
  
 
 ## Resource Linking
