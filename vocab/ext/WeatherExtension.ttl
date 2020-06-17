@@ -1,0 +1,127 @@
+@prefix schema: <http://schema.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix weather: <https://vocab.sti2.at/weather/> .
+
+## CLASSES
+
+weather:WeatherReport a rdfs:Class ;
+    rdfs:label "WeatherReport"@en ;
+    rdfs:comment "A collection or feed of weather measurements or forecasts" ;
+    rdfs:subClassOf schema:DataFeed .
+
+weather:WeatherMeasurement a rdfs:Class ;
+    rdfs:label "WeatherMeasurement"@en ;
+    rdfs:comment "A weather measurement" ;
+    rdfs:subClassOf schema:DataFeedItem . 
+
+## PROPERTIES
+
+weather:frequency a rdf:Property;
+    rdfs:label "frequency"@en;
+    schema:domainIncludes weather:WeatherReport;
+    schema:rangeIncludes schema:QuantitativeValue;
+    rdfs:comment "Frequency of the measurements in a report. Typically used together with the temporal coverege" .
+
+weather:temperature a rdf:Property ;
+    rdfs:label "temperature"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ; #use min, max from schema:QuantitativeValue to define day max/min
+    rdfs:comment "The air temperature" .
+
+weather:apparentTemperature a rdf:Property ;
+    rdfs:label "apparentTemperature"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The apparent (or “feels like”) temperature" .
+
+weather:dewPoint a rdf:Property ;
+    rdfs:label "dewPoint"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The dew point" .
+
+weather:humidity a rdf:Property ;
+    rdfs:label "humidity"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:Number ;
+    rdfs:comment "The relative humidity" .
+
+weather:uvIndex a rdf:Property ; # could also do category instead of index: https://www.who.int/uv/publications/en/UVIGuide.pdf
+    rdfs:label "uvIndex"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The UV index" .
+
+weather:precipitationProbability  a rdf:Property ;
+    rdfs:label "precipitationProbability"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:Number, schema:Text ; # 0.2 == "20%" ?
+    rdfs:comment "The probability of precipitation occurring" .
+
+weather:precipitation  a rdf:Property ;
+    rdfs:label "precipIntensity"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The intensity of precipitation occurring at the given time, measured in length per time" .
+
+weather:precipitationSnow a rdf:Property ;
+    rdfs:label "precipIntensity"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The amount of snowfall accumulation expected to occur, measured in length per time (e.g" .
+ 
+weather:windSpeed a rdf:Property ;
+    rdfs:label "windSpeed"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The wind speed" .
+
+weather:windGustSpeed a rdf:Property ;
+    rdfs:label "windGustSpeed"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "The wind gust speed" .
+
+weather:windDirection a rdf:Property ;
+    rdfs:label "windDirection"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue, schema:Text; # either bearing in percent or allow "N" or make enum weather/N ..
+    rdfs:comment "The direction that the wind is coming from. Either in bearing (degrees) or cardinal direction" .
+
+weather:visibility a rdf:Property ;
+    rdfs:label "visibility"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue, schema:Text ;
+    rdfs:comment "Textual description or visibility in length" .
+
+weather:cloudCover a rdf:Property ;
+    rdfs:label "cloudCover"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:Number ;
+    rdfs:comment "Percentage of sky occluded by clouds" .
+
+weather:sunrise a rdf:Property;
+    rdfs:label "sunrise"@en;
+    rdfs:comment "The sunrise time";
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:DateTime.
+
+weather:sunset a rdf:Property;
+    rdfs:label "sunset"@en;
+    rdfs:comment "The sunset time";
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:DateTime.
+
+weather:pressure a rdf:Property;
+    rdfs:label "pressure"@en;
+      rdfs:comment "Weather pressure";
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue .
+
+# not present in darksky weather api, but in wintersportbericht, add here though as more of a weather type property, not only for skilifts
+weather:snowHeight a rdf:Property;
+    rdfs:label "snowHeight"@en ;
+    schema:domainIncludes weather:WeatherMeasurement;
+    schema:rangeIncludes schema:QuantitativeValue ;
+    rdfs:comment "How high the snow is" .

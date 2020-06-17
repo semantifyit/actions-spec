@@ -1,0 +1,39 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix smtfy: <https://actions.semantify.it/vocab/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+
+#shacl declarations
+<https://actions.semantify.it/vocab> a owl:Ontology.
+<https://actions.semantify.it/vocab> sh:declare [
+		a sh:PrefixDeclaration;
+		sh:prefix "schema";
+		sh:namespace "http://schema.org/"^^xsd:anyURI ;
+	];
+	sh:entailment <http://www.w3.org/ns/entailment/RDFS>.
+
+smtfy:ActionStatusTarget a sh:SPARQLTargetType;
+	rdfs:subClassOf sh:Target;
+	sh:labelTemplate "Target action annotations with {$actionStatus} status";
+	sh:parameter [
+		sh:path schema:actionStatus;
+		sh:class schema:ActionStatusType;
+		sh:nodeKind sh:IRI;
+	];
+	sh:prefixes <https://actions.semantify.it/vocab> ;
+	sh:select """
+		SELECT ?this
+		WHERE {
+			?this a schema:Action .
+			?this schema:actionStatus $actionStatus .
+		}
+		""" .
+

@@ -1,0 +1,60 @@
+@prefix wasa: <https://vocab.sti2.at/wasa/> .
+@prefix schema: <http://schema.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+## types
+
+wasa:AuthenticationSpecification a rdfs:Class;
+    rdfs:label "AuthenticationSpecification"@en;
+    rdfs:comment "A specification for different authentication methods."@en;
+    rdfs:subClassOf schema:PropertyValue.
+
+wasa:FormBasedAuthentication a rdfs:Class;
+    rdfs:label "FormBasedAuthentication"@en;
+    rdfs:comment "A specification for custom form-based authentication methods."@en;
+    rdfs:subClassOf wasa:AuthenticationSpecification.
+
+wasa:TokenAuthentication a rdfs:Class;
+    rdfs:label "TokenAuthentication"@en;
+    rdfs:comment "A specification for token-based authentication methods such as JWT or OAuth";
+    rdfs:subClassOf wasa:AuthenticationSpecification.
+
+wasa:HTTPBasicAuthentication a rdfs:Class;
+    rdfs:label "HTTPBasicAuthentication"@en;
+    rdfs:comment "A specification for HTTP Basic Authentication (RFC7617)"@en;
+    rdfs:subClassOf wasa:AuthenticationSpecification;
+    rdfs:seeAlso <https://tools.ietf.org/html/rfc7617> .
+
+wasa:AuthenticateAction a rdfs:Class;
+    rdfs:label "AuthenticateAction";
+    rdfs:comment "An action for the obtaining the authentication token for an API (analogous to logging in a website)";
+    rdfs:subClassOf schema:Action.
+
+## properties
+
+wasa:authentication a rdf:Property ;
+    rdfs:label "authentication"@en ;
+    schema:domainIncludes schema:Action;
+    schema:rangeIncludes wasa:AuthenticationSpecification ;
+    rdfs:comment "An authentication specification for an action"@en .
+
+
+wasa:tokenFormat a rdf:Property ;
+    rdfs:label "tokenFormat"@en ;
+    schema:domainIncludes wasa:TokenAuthentication;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The format of the authentication token. (e.g. JWT, OAuth) "@en .
+
+wasa:credentialString a rdf:Property ;
+    rdfs:label "credentialString"@en ;
+    schema:domainIncludes wasa:HTTPBasicAuthentication;
+    schema:rangeIncludes schema:Text ;
+    rdfs:comment "The encoded credential string for HTTP Basic Authentication"@en .
+
+wasa:encoding a rdf:Property;
+    rdfs:label "encoding"@en;
+    schema:domainIncludes wasa:HTTPBasicAuthentication;
+    schema:rangeIncludes schema:Text;
+    rdfs:comment "The encoding method of the credential string for HTTP Basic Authentication"@en.
+

@@ -1,0 +1,105 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix wasa: <https://vocab.sti2.at/wasa/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+
+wasa:WebAPIShape a sh:NodeShape;
+	sh:name "WebAPIShape";
+	sh:description "A shape that constrains the WebAPI type.";
+	sh:targetClass schema:WebAPI;
+	sh:property [
+		sh:path schema:documentation;
+		sh:minCount 1;
+		sh:node wasa:DocumentationShape;
+		sh:class schema:CreativeWork;
+	];
+	sh:property [
+		sh:path schema:termsOfService;
+		sh:or ([sh:datatype xsd:anyURI;] [sh:datatype xsd:string])
+	] .
+
+wasa:DocumentationShape a sh:NodeShape;
+	sh:name "DocumentationShape";
+	sh:description "A shape for WebAPI documentation";
+		sh:property [
+		sh:path schema:about;
+		sh:node schema:PotentialActionShape;
+		sh:description "A resource description in the API.";
+	];
+	sh:property [
+		sh:path schema:encodingFormat;
+		sh:minCount 1;
+		sh:in ("application/ld+json" "text/html") #think about this
+	];
+	sh:property [
+		sh:path schema:url;
+		sh:minCount 1;
+		sh:maxCount 1;
+	];
+	sh:property [
+		sh:path schema:name;
+		sh:minCount 1;
+		sh:maxCount 1;
+	];
+	sh:property [
+		sh:path schema:description;
+		sh:datatype xsd:string;
+	];
+	sh:property [
+		sh:path schema:version;
+		sh:pattern "\\bv?\\d+\\.\\d+\\.\\d+(?:\\.[0-9]+)?\\b";
+		sh:minCount 1;
+		sh:maxCount 1;
+	];
+	sh:property [
+		sh:path schema:author;
+		sh:or ([sh:class schema:Person; sh:node wasa:ContactShape] [sh:class schema:Organization; sh:node wasa:ContactShape]);
+	];
+	sh:property [
+		sh:path schema:accountablePerson;
+		sh:class schema:Person;
+		sh:node wasa:ContactShape;
+	];
+	sh:property [
+		sh:path schema:contributor;
+		sh:or ([sh:class schema:Person; sh:node wasa:ContactShape] [sh:class schema:Organization; sh:node wasa:ContactShape]);
+	];
+	sh:property [
+		sh:path schema:provider;
+		sh:or ([sh:class schema:Person; sh:node wasa:ContactShape] [sh:class schema:Organization; sh:node wasa:ContactShape]);
+	];
+	sh:property [
+		sh:path schema:license;
+		sh:class schema:CreativeWork;
+		sh:node [ 
+			a sh:NodeShape;
+			sh:nodeKind sh:IRI;
+			sh:property [
+				sh:path schema:name;
+				sh:datatype xsd:string ;
+				sh:minCount 1;
+			];
+		]
+
+	] .
+
+wasa:ContactShape a sh:NodeShape;
+	sh:name "ContactShape";
+	sh:description "A shape for the essential contact information of a Person or Organization";
+	sh:property [
+		sh:path schema:name;
+		sh:datatype xsd:string;
+	];
+	sh:property [
+		sh:path schema:email;
+		sh:datatype xsd:string;
+	];
+	sh:property [
+		sh:path schema:url;
+		sh:nodeKind sh:IRI;
+	] .

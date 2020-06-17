@@ -1,0 +1,87 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix smtfy: <https://actions.semantify.it/vocab/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+
+smtfy:ActiveActionStatusShape a sh:NodeShape;
+	sh:targetNode schema:ActiveActionStatus;
+		sh:property [
+		sh:path smtfy:authentication;
+		sh:or 
+		(
+			[
+				sh:class smtfy:FormBasedAuthentication;
+				sh:node 
+				[
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value;
+						sh:datatype xsd:string;
+						sh:minCount 1;
+						sh:maxCount 1;
+
+					];
+					sh:property [
+						sh:path smtfy:sentIn;
+						sh:class smtfy:HTTPMessagePart;
+						sh:minCount 1;
+						sh:maxCount 1;
+					];
+					sh:property [
+						sh:path schema:name;
+						sh:datatype xsd:string;
+						sh:minCount 1;
+						sh:maxCount 1;
+					];						
+				];
+			]
+			[
+				sh:class smtfy:TokenAuthentication;
+				sh:node 
+				[
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value;
+						sh:datatype xsd:string;
+						sh:minCount 1;
+						sh:maxCount 1;
+						
+					];
+					sh:property [
+						sh:path smtfy:tokenFormat;
+						sh:datatype xsd:string; 
+						sh:minCount 1;
+						sh:maxCount 1;
+						sh:in ("OAuth20" "JWT");
+					];
+				];
+			]
+			[
+				sh:class smtfy:HTTPBasicAuthentication;
+				sh:node [
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value;
+						sh:class xsd:string;
+						sh:minCount 1;
+						sh:maxCount 1;
+					];
+					sh:property [
+						sh:path smtfy:encoding;
+						sh:datatype xsd:string;
+						sh:minCount 1;
+						sh:maxCount 1;
+						sh:defaultValue "base64"
+					]	
+				]
+			]				
+		)
+	].

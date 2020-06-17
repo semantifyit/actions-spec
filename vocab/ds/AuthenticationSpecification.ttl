@@ -1,0 +1,27 @@
+smtfy:FormBasedAuthenticationShape a sh:NodeShape;
+	sh:name "FormBasedAuthenticationShape";
+	sh:description "The shape that defines constraints on the form based authentication descriptions";
+	sh:targetClass smtfy:FormBasedAuthentication;
+	sh:property [
+		sh:path smtfy:sentIn;
+		sh:in (smtfy:HTTPMessageBody smtfy:HTTPMessageHeader smtfy:HTTPMessageURL);
+	];
+	sh:property [
+		sh:path schema:name;
+		sh:description "A custom form based authentication must have one name.";
+		sh:datatype xsd:string;
+		sh:minCount 1;
+		sh:maxCount 1;
+	] .
+
+smtfy:AuthenticationSpecificationShape a sh:NodeShape;
+	sh:name "AuthenticationSpecificationShape";
+	sh:description "A shape describing constraints on authentication specifications";
+	sh:targetClass smtfy:AuthenticationSpecification;
+	sh:property [
+		sh:path schema:value;
+		sh:description "An authentication specification must have one value.";
+		sh:datatype xsd:string;
+		sh:minCount 1;
+		sh:maxCount 1;
+	] .

@@ -1,0 +1,279 @@
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix wasa: <https://vocab.sti2.at/wasa/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+
+wasa:PotentialActionShape a sh:NodeShape;
+#	sh:target	[
+#		a wasa:ActionStatusTarget;
+#		schema:actionStatus schema:PotentialActionStatus;
+#	];
+	sh:class schema:Action;
+	sh:property [
+		sh:path schema:actionStatus;
+		sh:hasValue schema:PotentialActionStatus;
+		sh:minCount 1;
+		sh:maxCount 1;
+	];
+	sh:property [
+		sh:path wasa:authentication;
+		sh:or 
+		(
+			[
+				sh:class wasa:FormBasedAuthentication;
+				sh:minCount 1;
+				sh:maxCount 1;
+				sh:node 
+				[
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value-input;
+						sh:minCount 1;
+						sh:maxCount 1;
+						sh:class schema:PropertyValueSpecification;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							]
+						];
+
+					];
+					sh:property [
+						sh:path schema:name-input;
+						sh:class schema:PropertyValueSpecification;
+						sh:minCount 1;
+						sh:maxCount 1;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+						];
+					];						
+				];
+			]
+			[
+				sh:class wasa:TokenAuthentication;
+				sh:node 
+				[
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value-input;
+						sh:class schema:PropertyValueSpecification;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							]
+						];						
+					];
+					sh:property [
+						sh:path wasa:tokenFormat-input; 
+						sh:class schema:PropertyValueSpecification;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property
+							[
+								sh:path wasa:valueList;
+								sh:hasValue (wasa:OAuth20 wasa:JWT);
+								sh:minCount 1;
+								sh:maxCount 1;
+							]
+						];
+					];
+				];
+			]
+			[
+				sh:class wasa:HTTPBasicAuthentication;
+				sh:node [
+					a sh:NodeShape;
+					sh:property [
+						sh:path schema:value-input;
+						sh:datatype xsd:string;
+						sh:class schema:PropertyValueSpecification;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:defaultValue;
+								sh:hasValue "base64";
+								sh:minCount 1;
+								sh:maxCount 1;
+							]
+						];
+					];
+					sh:property [
+						sh:path wasa:encoding-input;
+						sh:datatype xsd:string;
+						sh:class schem:PropertyValueSpecification;
+						sh:node [
+							sh:property [
+								sh:path schema:multipleValues;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:valueRequired;
+								sh:minCount 1;
+								sh:maxCount 1;
+							];
+							sh:property [
+								sh:path schema:defaultValue;
+								sh:hasValue "base64";
+								sh:minCount 1;
+								sh:maxCount 1;
+							]
+						];
+					]	
+				]
+			]				
+		)
+	];
+	sh:property	[
+		sh:path schema:object;
+		sh:class sh:NodeShape;
+		sh:node [
+			sh:property [
+				sh:path sh:targetClass;
+				sh:hasValue schema:Thing;
+			]
+		]
+	];
+	sh:property [
+		sh:path schema:result;
+		sh:class sh:NodeShape;
+		sh:node [
+			sh:property [
+				sh:path sh:targetClass;
+				sh:hasValue schema:Thing;
+		];
+		sh:minCount 1;
+	];
+	sh:property [
+		sh:path schema:target;
+		sh:class schema:EntryPoint;
+		sh:minCount 1;
+		sh:node [
+			a sh:NodeShape;
+			sh:property [
+				sh:path schema:contentType;
+				sh:datatype xsd:string;
+			];
+			sh:property [
+				sh:path schema:encodingType;
+				sh:datatype xsd:string;
+			];
+			sh:property [
+				sh:path schema:httpMethod;
+				sh:datatype xsd:string;
+				sh:in ("GET" "HEAD" "POST" "PUT" "DELETE" "CONNECT" "OPTIONS" "TRACE");
+				sh:minCount 1;
+			];
+			sh:property [
+				sh:path schema:urlTemplate;
+				sh:datetype xsd:string ;
+				sh:minCount 1;
+			];
+		];
+	];	
+	sh:property [
+		sh:path schema:error;
+		sh:description "Human readable error messages for potential errors for this action.";
+		sh:class wasa:Error;
+		sh:property [
+			sh:path schema:propertyID;
+			sh:description: "An internal ID for the error message.";
+			sh:datatype xsd:string;	
+		];
+		sh:property [
+			sh:path schema:description;
+			sh:datatype xsd:string;
+			sh:node [ 
+				a sh:NodeShape;
+				sh:property [
+					sh:path schema:defaultValue;
+					sh:datatype xsd:string;
+				];
+			];	
+		];		
+	];
+	sh:property [
+		sh:path wasa:potentialActionLink;
+		sh:class wasa:PotentialActionLink
+
+	];
+	sh:property [
+		sh:path wasa:precedingActionLink;
+		sh:class wasa:PrecedingActionLink 
+	]
+	].
+
+wasa:PotentialActionStatusShape a sh:NodeShape;
+	sh:targetNode schema:PotentialActionStatus;
+	sh:property [
+		sh:path wasa:httpStatusCode;
+		sh:description "Potential HTTP response status code a server may return for a request based on this resource description";
+		sh:class schema:PropertyValue;
+		sh:node [
+			a sh:NodeShape;
+			sh:property [
+				sh:path schema:value;
+				sh:datatype schema:integer;
+				sh:minCount 1;
+				sh:minInclusive 100;
+				sh:maxInclusive 599;
+			]; 
+			sh:property [
+				sh:path schema:description;
+				sh:class xsd:string;
+				sh:minCount 1;	
+			];
+
+		];
+	].
+
+
+
+

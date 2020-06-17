@@ -1,0 +1,40 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix smtfy: <https://actions.semantify.it/vocab/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+
+smtfy:FailedActionStatusShape a sh:NodeShape;
+	sh:targetNode schema:FailedActionStatus;
+	sh:deactivated true;
+	sh:property [
+		sh:path smtfy:httpStatusCode;
+		sh:class schema:PropertyValue;
+		sh:minCount 1;
+		sh:maxCount 1;
+		sh:node [
+			a sh:NodeShape;
+			sh:property [
+				sh:path schema:value;
+				sh:datatype xsd:integer;	
+				sh:minCount 1;
+				sh:maxCount 1;
+				sh:minInclusive 400;
+				sh:maxInclusive 599;
+			]; 
+			sh:property [
+				sh:path schema:description;
+				sh:datatype xsd:integer;
+				sh:minCount 1;
+				sh:maxCount 1;
+			];
+
+		];
+	].

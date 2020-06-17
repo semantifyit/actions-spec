@@ -1,0 +1,204 @@
+{
+    "@context": {
+        "@vocab": "http://schema.org/",
+        "weather": "https://vocab.sti2.at/weather/",
+        "wasa": "http://vocab.sti2.at/wasa/",
+        "sh": "https://www.w3.org/ns/shacl#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@type": "SearchAction",
+    "@id": "http://actions.semantify.it/action/0AKwi1",
+    "name": "Get the current weather based on geocoordinates",
+    "target": {
+        "@type": "EntryPoint",
+        "contentType": "application/ld+json",
+        "encodingType": "application/ld+json",
+        "httpMethod": "POST",
+        "urlTemplate": "http://actions.semantify.it/api/xsdtva/action/0AKwi1"
+    },
+    "wasa:actionShape": {
+        "@type": "sh:NodeShape",
+        "sh:targetNode": "http://actions.semantify.it/api/xsdtva/action/0AKwi1",
+        "sh:property": [
+            {
+                "sh:path": "object",
+                "sh:group": "wasa:Input",
+                "sh:class": "weather:WeatherReport",
+                "sh:node": {
+                    "sh:property": [{
+                        "sh:path": "contentLocation",
+                        "sh:class": "Place",
+                        "sh:node": {
+                            "sh:property": {
+                                "sh:path": "geo",
+                                "sh:class": "GeoCoordinates",
+                                "sh:node": {
+                                    "sh:property": [
+                                        {
+                                            "sh:path": "latitude",
+                                            "sh:datatype": "xsd:string"
+                                        },
+                                        {
+                                            "sh:path": "longitude",
+                                            "sh:datatype": "xsd:string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "sh:path":"variableMeasured",
+                        "sh:class": "PropertyValue",
+                        "sh:node": {
+                            "sh:property":{
+                                "sh:path": "unitCode",
+                                "sh:in": {
+                                    "@list":[
+                                        "CE",
+                                        "FA"
+                                    ]
+                                },
+                                "sh:defaultValue": "CE"
+                            }
+                        }
+                    }
+            ]
+                }
+            },
+            {
+                "sh:path": "result",
+                "sh:group": "wasa:Output",
+                "sh:class": "weather:WeatherReport",
+                "sh:node": {
+                    "sh:property": {
+                        "sh:path": "contentLocation",
+                        "sh:class": "Place",
+                        "sh:node": {
+                            "sh:property": {
+                                "sh:path": "geo",
+                                "sh:minCount": 1,
+                                "sh:class": "GeoCoordinates",
+                                "sh:node": {
+                                    "sh:property": [
+                                        {
+                                            "sh:path": "latitude",
+                                            "sh:datatype": "xsd:string",
+                                            "sh:equals": {
+                                                "@list": [
+                                                    {"sh:inversePath": "geo"},
+                                                    {"sh:inversePath": "contentLocation"},
+                                                    {"sh:inversePath": "result"},
+                                                    "object",
+                                                    "contentLocation",
+                                                    "geo",
+                                                    "latitude"
+                                                ]
+                                            },
+                                            "sh:minCount": 1
+                                        },
+                                        {
+                                            "sh:path": "longitude",
+                                            "sh:datatype": "xsd:string",
+                                            "sh:equals": {
+                                                "@list": [
+                                                    {"sh:inversePath": "geo"},
+                                                    {"sh:inversePath": "result"},
+                                                    "object",
+                                                    "contentLocation",
+                                                    "geo",
+                                                    "latitude"
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "sh:path": "dataFeedElement",
+                                            "sh:class": "weather:WeatherMeasurement",
+                                            "sh:node": {
+                                                "sh:property": [
+                                                    {
+                                                        "sh:path": "dateCreated",
+                                                        "sh:datatype": "xsd:datetime",
+                                                        "sh:minCount": 1
+                                                    },
+                                                    {
+                                                        "sh:path": "name",
+                                                        "sh:datatype": "xsd:string",
+                                                        "sh:minCount": 1
+                                                    },
+                                                    {
+                                                        "sh:path": "description",
+                                                        "sh:datatype": "xsd:string",
+                                                        "sh:minCount": 1
+                                                    },
+                                                    {
+                                                        "sh:path": "weather:temperature",
+                                                        "sh:minCount": 1,
+                                                        "sh:class": "QuantitativeValue",
+                                                        "sh:node": {
+                                                            "sh:property": [
+                                                                {
+                                                                    "sh:path": "value",
+                                                                    "sh:minCount": 1,
+                                                                    "sh:datatype": "xsd:float"
+                                                                },
+                                                                {
+                                                                    "sh:path": "minValue",
+                                                                    "sh:datatype": "xsd:float"
+                                                                },
+                                                                {
+                                                                    "sh:path": "maxValue",
+                                                                    "sh:datatype": "xsd:float"
+                                                                },
+                                                                {
+                                                                    "sh:path": "unitCode",
+                                                                    "sh:datatype": "xsd:string",
+                                                                    "sh:minCount": 1,
+                                                                    "sh:equals": {
+                                                                        "@list": [
+                                                                            {"sh:inversePath": "temperature"},
+                                                                            {"sh:inversePath": "dataFeedElement"},
+                                                                            {"sh:inversePath": "result"},
+                                                                            "object",
+                                                                            "variableMeasured",
+                                                                            "unitCode"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "sh:path": "weather:apparentTemperature",
+                                                        "sh:minCount": 1,
+                                                        "sh:class": "QuantitativeValue",
+                                                        "sh:node": {
+                                                            "sh:property": {
+                                                                "sh:path": "unitCode",
+                                                                "sh:datatype": "xsd:string",
+                                                                "sh:equals": {
+                                                                    "@list": [
+                                                                        {"sh:inversePath": "temperature"},
+                                                                        {"sh:inversePath": "dataFeedElement"},
+                                                                        {"sh:inversePath": "result"},
+                                                                        "object",
+                                                                        "variableMeasured",
+                                                                        "unitCode"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
