@@ -1,0 +1,24 @@
+{
+    "@context": {
+      "sh": "http://www.w3.org/ns/shacl#",
+      "wasa": "https://vocab.sti2.at/wasa/",
+      "weather": "https://vocab.sti2.at/weather/",
+      "@vocab": "http://schema.org/"
+    },
+    "@type": "WebAPI",
+    "name": "Open Weather API",
+    "description": "Annotation of Open Weather API with schema.org actions",
+    "documentation": {
+      "@type": "CreativeWork",
+      "name": "API documentation",
+      "url": "",
+      "encodingFormat": "application/ld+json",
+      "version": "1.0.0",
+      "about": [
+        {
+          "@id": "http://actions.semantify.it/api/rdf/action/100665a8-a0de-11ea-8c03-c14ba487f916"
+        }
+      ]
+    },
+    "@id": "http://actions.semantify.it/api/rdf/webapi/100665a0-a0de-11ea-8c03-c14ba487f916"
+  }

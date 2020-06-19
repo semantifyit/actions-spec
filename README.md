@@ -1,7 +1,12 @@
 # Introduction
-The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. This specification puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
+The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
 
-?> _TODO_ add namespace
+The WASA language sees Web APIs as a collection of actions that can be taken on a resource. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use schema.org and its extensions. A Web API publisher can define constraints over the input and output of an action with SHACL shapes.
+
+?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
+
+
+Below we first introduce the domain specification approach and domain-specific patterns. Afterwards we show the relevant types and properties of schema.org for action annotation. We also explain the usage of WASA language from a practical perspective and give some use cases for the potential usage of annotated Web APIs.
 
 
 # Domain Specification
@@ -15,22 +20,21 @@ A domain specification is a process to create a domain specific pattern, which i
 
 !> **_Relationship between SHACL and Domain Specifications_**: SHACL is a language that is built around the notion of *shape* in order to verify RDF graphs. A shape is either a node shape that applies constraints on nodes in an RDF graph, or a property shape that does the same to properties. In principle, we use SHACL as is, but we apply stricter syntax rules in terms of which constraint components can be applied on which type of shapes and how the shapes are interpreted (semantics). For instance, multiple target definitions are interpreted as disjunction in SHACL, but as a conjunction in domain specification approach.
 
-?> _TODO_ add an example domain specification 
+?> For a domain specific pattern, please see the [LodgingBusiness](https://semantify.it/domainSpecifications/public/l49vQ318v) example. The domain specification operator as for this pattern is also [available](https://semantify.it/ds/l49vQ318v) as a SHACL shape. 
 
 
 # Schema.org Actions
 
 Schema.org contains an [Action](https://schema.org/Action) type to provide a mechanism to define actions that can be take on entities. In the context of schema.org, the actions are quite generic. For example, the [Action](https://schema.org/Action) type includes properties like **startTime** and **endTime** to describe the time span an action occurred or the **location** property to describe where the action took place. We restrict and extend the properties defined for the [Action](https://schema.org/Action) type and consequently its subtypes in order to make them more specific to a Web API annotation task.
-The table below shows the properties of Action type we use for the Web API annotations (Italic properties and types indicate that they come from the semantify.it actions extension).
+The table below shows the properties of Action type that are relevant for the WASA language.
 
 |    **Property**    |            **Range**            | **Description** |
 |:--------------:|:---------------------------:|:-----------:|
 |  actionStatus  |       ActionStatusType      |           Indicates the current disposition of the Action.  |
-| _authentication_ | _AuthenticationSpecification_ |        A specification for different authentication methods.     |
 |     object     |            Thing            |       The object upon which the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read a book.      |
 |     result     |            Thing            |      The result produced in the action. e.g. John wrote a book.       |
 |     target     |          EntryPoint         |      Indicates a target EntryPoint for an Action.       |
-|      error     |            _Error_            |      An error specification.       |
+|      error     |            Thing            |      An error specification.       |
 
 ## Input-Output Parameters
 
@@ -42,7 +46,7 @@ Schema.org actions provide a mechanism to define the input and output parameters
 | &lt;property&gt;-input | PropertyValueSpecification | Indicates how a property should be filled in before initiating the action. |
 | &lt;property&gt;-output | PropertyValueSpecification | Indicates how the field will be filled in when the action is completed. |
 
-The PropertyValueSpecification type contains several properties that reflect the input attributes in HTML forms. These properties enable the description of the nature of input and output (Italic property indicates a property from the semantify.it actions extension).
+The PropertyValueSpecification type contains several properties that reflect the input attributes in HTML forms. These properties enable the description of the nature of input and output.
 
 [PropertyValueSpecification](http://schema.org/PropertyValueSpecification)
 
@@ -60,35 +64,103 @@ The PropertyValueSpecification type contains several properties that reflect the
  minValue | Number, Date, Time, DateTime | Specifies the allowed range and intervals for literal values.  
  maxValue | Number, Date, Time, DateTime | The upper value of some characteristic or property. 
  stepValue | Number | The step attribute indicates the granularity that is expected (and required) of the value.
- _valueList_ | [SHACL List](https://www.w3.org/TR/shacl/#dfn-shacl-list) | A list of possible values for the property.
 
 ?> The input and output properties on an Action support a syntactical shorthand. One can write `<property>-input: "required maxlength=100 name=q"` in order to specify a required input parameter named **q** with maximum length of 100 characters. See the [documentation](https://schema.org/docs/actions.html) for details.
 
 ## Potential Actions
-The schema.org vocabulary defines a potentialAction property that enables the connection of actions on instances. Informally, the instance to which an potential action is connected is the object of that action. For a more formal definition for Web API annotation, see the [specification](#specification).
+The schema.org vocabulary defines a potentialAction property that enables the connection of actions on instances. Informally, the instance to which an potential action is connected is the object of that action. We explain how potential actions are defined with WASA in the [Specification](#specification) section.
 
 # Conceptualization
 
 A schema.org action can have one of four statuses depending on its state. We map different stages of the client-API interaction to schema.org action statuses.
 
-**Resource Description**: The description of an operation on a specific resource. This action is in **PotentialActionStatus**. 
+**Operation Description (Potential Action)**: The description of an operation on a specific resource. This action is in **PotentialActionStatus**. 
 
-?> See [Appendix](#appendix) for the domain specification operator that defines the Action pattern for resource descriptions.
+**Request (Active Action)**: An action instance with all required parameters (and possible optional) parameters are filled. This action is in **ActiveActionStatus**.
 
-**Request**: An action instance with all required parameters (and possible optional) parameters are filled. This action is in **ActiveActionStatus**.
-
-**Response**: A (lifted) response from the server to a request. This action instance is in **CompletedActionStatus**.
+**Response (Completed/Failed Action)**: A (lifted) response from the server to a request. This action instance is in **CompletedActionStatus** or **FailedActionStatus**.
 
 # Specification
 
-?> _TODO_ explanation about the examples
+In this section, we explain the WASA specification with a running example. We annotate an operation from the [OpenWeather API](https://openweathermap.org/api) and link the resulting action with another action created based on a geocoding operation from the [Open Cage Data API](https://opencagedata.com/api). The content of this section is based on [MindLab Deliverable D543](https://drive.google.com/file/d/13K9AD-uwfv_7zL-LaLPRHC6dPf1ENi_1/view?usp=sharing).
+
+?> The descriptions in this section are rather informal. See [Appendix](#appendix) for the domain specification operators (SHACL shapes) that dictate the WASA language based on the schema.org vocabulary and WASA extension.
+
+?> **Notation:** The types and properties written in the flowing text are `emphasized`. The first letter of types are capitalized (e.g. `Thing`). Properties are written in camel case (e.g. `potentialAction`). Any type or property without a prefix is from schema.org vocabulary. The types and properties introduced by the WASA language represented with _wasa_ prefix. _sh_ is used for SHACL types and properties. 
 
 ##  Web API
 
-A resource description is an extended SHACL node shape. It consists of the following elements:
+The WASA specification uses the `WebAPI` type as the main type to annotate the entry point of a Web API. This type allows the definition of the API documentation (machine- and human-readable) as well as some non-functional metadata about the API.
+
+**Thing  > Intangible  > Service  > [WebAPI](http://schema.org/WebAPI)**
+
+| Property | Range | Description                                                                    |
+|-------------------|----------------|-----------------------------------------------------------------------------------------|
+| name              | Text           | The name of the Web API                                                                 |
+| description       | Text           | A short description of the Web API                                                      |
+| documentation     | CreativeWork   | The documentation(s) of the Web API. A documentation can be machine- or human-readable. |
+| termsOfService    | URL or Text    | A terms of service document of the Web API.                                             |
+
+The most important property of this type is the `documentation` property. This property allows a definition of documentation as an instance of type CreativeWork. This documentation can be processed by a client (human or machine) to consume the API.
+
+### Example
+
+```json
+{
+  "@context": {
+    "sh": "http://www.w3.org/ns/shacl#",
+    "wasa": "https://vocab.sti2.at/wasa/",
+    "weather": "https://vocab.sti2.at/weather/",
+    "@vocab": "http://schema.org/"
+  },
+  "@type": "WebAPI",
+  "name": "Open Weather API",
+  "description": "Annotation of Open Weather API with schema.org actions",
+  "documentation": {
+    "@type": "CreativeWork",
+    "name": "API documentation",
+    "url": "",
+    "encodingFormat": "application/ld+json",
+    "version": "1.0.0",
+    "about": [
+      {
+        "@id": "http://actions.semantify.it/api/rdf/action/100665a8-a0de-11ea-8c03-c14ba487f916"
+      }
+    ]
+  },
+  "@id": "http://actions.semantify.it/api/rdf/webapi/100665a0-a0de-11ea-8c03-c14ba487f916"
+}
+```
+
+
 ## API Documentation 
 
+A documentation of a Web API is an instance of the `CreativeWork` type.
+
+**Thing > [CreativeWork](http://schema.org/CreativeWork)**
+
+| Property | Range         | Description                                                 |
+|-------------------|------------------------|----------------------------------------------------------------------|
+| about             | Action                 | An operation on a resource of a Web API                              |
+| accountablePerson | Person or Organization | A person or organization that is accountable from the Web API        |
+| author            | Person or Organization | The author of the Web API documentation                              |
+| contributor       | Person or Organization | A person or organization who contributed to the Web API in some way. |
+| encodingFormat    | Text                   | A media type. Typically application/ld+json or text/html             |
+| license           | CreativeWork           | The license of the Web API documentation                             |
+| name              | Text                   | The name of the documentation                                        |
+
+!> A Web API can have multiple documentations. However a WASA client does not have to understand all documentations. A WASA client should be able to process the documentations that are encoded in an RDF serialization format (e.g. application/ld+json). 
+
+The `about` property takes `Action` instances as value. The values of the `about` property comprise a set of operation descriptions (i.e. Potential Actions) that can be taken on a resource on a Web API.  The value of the `encodingFormat` property indicates to the client how the API can be processed. The properties with the range `Person` or `Organization` typically contain contact information such as name, e-mail and URL of the person or organization's website.
+
+### Example
+
+See the value of the `documentation` property in the Web API example. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
+
+
 ## Resource Description
+
+
  
 ## Resource Linking
 
@@ -123,6 +195,6 @@ RML example
 
 TBD
 
-## Domain Specification for Resource Description Annotations
+## Domain Specification Operators for WASA
 
 TBD
