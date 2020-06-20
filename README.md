@@ -169,7 +169,7 @@ See the value of the `documentation` property in the [Web API example](#example)
 
 ## Resource Operation Description
 
-The building blocks of an API annotated with WASA are instances of \emph{Action} which describe the operations that can be taken on a resource.
+The building blocks of an API annotated with WASA are instances of `Action` which describe the operations that can be taken on a resource.
 
 Thing > [Action](http://schema.org/Action)
 
@@ -184,6 +184,8 @@ Thing > [Action](http://schema.org/Action)
 | wasa:potentialActionLink | wasa:PotentialActionLink | The potential action that may be attached to the response returned after invoking an action |
 | wasa:precedingActionLink | wasa:ActionLink                     | An action whose result is linked to the input of an action.                                 |
  
+?> _TODO_ add description
+
 ## Resource Linking
 
 
