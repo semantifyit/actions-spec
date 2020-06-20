@@ -1,3 +1,12 @@
+# Preface {docsify-ignore}
+
+|        | Name, Affiliation |
+|----------------|--------------------------------------------------------------|
+| **Editor**:        | [Umutcan Şimşek](http://umutcan.eu), University of Innsbruck |
+| **Contributors:**   | [Thibault Gerrier](https://www.sti-innsbruck.at/about/team/details/thibault-gerrier), University of Innsbruck    |
+| **Latest Version:** | [v0.2.1](changelog.md ":target=_blank") ({docsify-updated})                                                      |
+
+
 # Introduction
 The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
 
@@ -155,12 +164,25 @@ The `about` property takes `Action` instances as value. The values of the `about
 
 ### Example
 
-See the value of the `documentation` property in the Web API example. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
+See the value of the `documentation` property in the [Web API example](#example) above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
 
 
-## Resource Description
+## Resource Operation Description
 
+The building blocks of an API annotated with WASA are instances of \emph{Action} which describe the operations that can be taken on a resource.
 
+Thing > [Action](http://schema.org/Action)
+
+| Property             | Range                      | Description                                                                        |
+|--------------------------|-------------------------------------|---------------------------------------------------------------------------------------------|
+| actionStatus             | ActionStatusType                    | The status of the action                                                                    |
+| description              | Text                                | A short description of the operation on a resource                                          |
+| error                    | wasa:Error                          | An error message that the operation may return                                              |
+| name                     | Text                                | The name of the operation                                                                   |
+| target                   | EntryPoint                          | The invocation mechanism of the action over HTTP                                            |
+| wasa:actionShape         | sh:NodeShape                        | The domain specification operators that define the input and output parameters              |
+| wasa:potentialActionLink | wasa:PotentialActionLink | The potential action that may be attached to the response returned after invoking an action |
+| wasa:precedingActionLink | wasa:ActionLink                     | An action whose result is linked to the input of an action.                                 |
  
 ## Resource Linking
 
@@ -198,3 +220,7 @@ TBD
 ## Domain Specification Operators for WASA
 
 TBD
+
+# Acknowledgement
+
+# Publications
