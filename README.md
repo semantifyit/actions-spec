@@ -186,7 +186,7 @@ Thing > [Action](http://schema.org/Action)
 Alongside the name and the description of the operation, we can define potential error messages and status codes (via the `error` property), linked actions (via `wasa:potentialActionLink` and `wasa:precedingActionLink` properties), the invocation mechanism (via `target` property) and various input and output specifications (via `wasa:actionShape`).
 
 
-The example below shows the _GetCurrentWeather_ action. Since it is an operation description, the `actionStatus` property has `PotentialActionStatus`. The values of `target`, `wasa:actionShape` and `wasa:precedingActionLink` properties will be explained in detail in the following sections.
+The example below shows the _GetCurrentWeather_ action. Since it is an operation description, the `actionStatus` property has `PotentialActionStatus` value. The values of `target`, `wasa:actionShape` and `wasa:precedingActionLink` properties will be explained in detail in the following sections.
 
 ```json
 {
@@ -215,6 +215,8 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
   }
 ```
 <div class="caption">Resource Operation Description example</div>
+
+> _TODO_ update example with error and potentialActionLink properties.
 
 ## Resource Linking
 
