@@ -4,7 +4,7 @@
 |----------------|--------------------------------------------------------------|
 | **Editor**:        | [Umutcan Şimşek](http://umutcan.eu), University of Innsbruck |
 | **Contributors:**   | [Thibault Gerrier](https://www.sti-innsbruck.at/about/team/details/thibault-gerrier), University of Innsbruck    |
-| **Latest Version:** | [v0.3.1](changelog.md ":target=_blank") ({docsify-updated})                                                      |
+| **Latest Version:** | [v0.4.0](changelog.md ":target=_blank") ({docsify-updated})                                                      |
 
 
 # Introduction
@@ -218,7 +218,53 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
 
 > _TODO_ update example with error and potentialActionLink properties.
 
-## Resource Linking
+### Error
+
+An operation can have multiple error messages that can occur after a request. Alongside the HTTP error code that is returned in the request header, more specific errors can be specified. 
+The description of these potential errors that can occur during an operation is done via the instances of `wasa:Error` type. 
+
+**Thing > Intangible > StructuredValue > PropertyValue > Error**
+
+| Property    | Range | Description                                                                                           |
+|-------------|-------|-------------------------------------------------------------------------------------------------------|
+| description | Text  | A custom error message supporting the HTTP status                                             |
+| propertyID  | Text  | An internal ID for the error message.                                                                 |
+| url         | URL   | A website that contains the details about the error message and possibly troubleshooting information. |
+
+
+For a potential error, a `propertyID` can be specified, which is typically an ID assigned by the API. The `description` property is used for the error message. A URL for the detailed error description and troubleshooting information can be specified with via the `url` property. 
+
+> _TODO_ add an error example
+
+### Invocation
+
+The invocation mechanism of an operation is specified with an instance of the `EntryPoint` type as the value of the `target` property. 
+
+
+**Thing >  Intangible > [EntryPoint](http://schema.org/EntryPoint)**
+
+| Property | Range |  Description                                                                                                                           |
+|-------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| contentType       | Text           | The supported content type(s) for an EntryPoint response.                                                                                      |
+| encodingType      | Text           | The supported encoding type(s) for an EntryPoint request.                                                                                      |
+| httpMethod        | Text           | An HTTP method that specifies the appropriate HTTP method for a request to an HTTP EntryPoint. Values are capitalized strings as used in HTTP. |
+| urlTemplate       | Text           | An url template (RFC6570) that will be used to construct the target of the execution of the action.                                            |
+
+The interaction mechanism of a client and an API that serves actions is based on exchanging action instances with different status ([see `actionStatus` property and its possible values](#resource-operation-description).) 
+
+?> The interaction mechanism of a WASA Client and a WASA Web API resembles to [GraphQL](https://graphql.org/learn/serving-over-http/).  
+
+A WASA client and Web API exchange `Action` instances. This requires the value of the `contentType` and `encodingFormat` properties to be an RDF serialization format. The `httpMethod` property specifies the HTTP method of the request.
+
+!> Although any RDF serialization format can be used, the JSON-LD format is recommended. Since the representation of action instances in may become quite large, POST requests are preferred. 
+
+The value of the `urlTemplate` property represents the endpoint to which a WASA client should send a request.
+
+!> The endpoint may represent a single resource (e.g., _api.openweathermap.org/data/2.5/weather_) or the entire API as a graph, similar to the GraphQL approach (e.g., _action.semantify.it/api/openweather/action/_).
+
+### Action Shape
+
+### Action Linking
 
 
 In many cases, an operation on a resource of an API requires the response of another operation on another resource in the same or a different API. To support such cases, we allow linking of property shapes as the value of a property whose value needs to be retrieved from the result of another action. There are two ways to do this linking. 
@@ -226,24 +272,24 @@ In many cases, an operation on a resource of an API requires the response of ano
 The simplest way is when the entire result object is needed as an input. This can be accomplished by just linking a node shape. See the example below for an action to search bus stops.
 
 
-## Lifting and Grounding
+## Grounding and Lifting
 
 ### Grounding (Request Mapping)
 
-?> _TODO_ will be done with an extended version of Xquery and Handlebars.
+> _TODO_ will be done with an extended version of Xquery and Handlebars.
 
 ### Lifting (Response Mapping)
 
 RML example
 
-?> _TODO_ Check the Function Ontology from imec Gent for describing functions.
+> _TODO_ Check the Function Ontology from imec Gent for describing functions.
 
 
 # Tools
 
 # Use Case: Dialog Generation from API Annotations
 
-?> _TODO_ link to uimo
+> _TODO_ link to uimo
 
 # Appendix 
 

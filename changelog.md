@@ -1,4 +1,4 @@
-## Change Log {docsify-ignore}
+## Changelog {docsify-ignore}
 
 ### v0.1.0
 
@@ -22,3 +22,7 @@
 
 * Website: caption style refactoring
 * examples are refactored for better document structure
+
+### v0.4.0
+* added error specification
+* added invocation specification
