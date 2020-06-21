@@ -14,3 +14,4 @@
 ### v0.2.1
 
 * Website: fixed sidebar rendering error
+* Added Resource Operation Description

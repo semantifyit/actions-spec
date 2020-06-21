@@ -184,7 +184,40 @@ Thing > [Action](http://schema.org/Action)
 | wasa:potentialActionLink | wasa:PotentialActionLink | The potential action that may be attached to the response returned after invoking an action |
 | wasa:precedingActionLink | wasa:ActionLink                     | An action whose result is linked to the input of an action.                                 |
  
-?> _TODO_ add description
+!> An operation description on a resource has the value `PotentialActionStatus` for the `actionStatus` property.The same property has `ActiveActionStatus` for requests and `CompletedActionStatus` or `FailedActionsStatus` responses. 
+
+Alongside the name and the description of the operation, we can define potential error messages and status codes (via the `error` property), linked actions (via `wasa:potentialActionLink` and `wasa:precedingActionLink` properties), the invocation mechanism (via `target` property) and various input and output specifications (via `wasa:actionShape`).
+
+### Example
+
+The example below shows the _GetCurrentWeather_ action. Since it is an operation description, the `actionStatus` property has `PotentialActionStatus`. The values of `target`, `wasa:actionShape` and `wasa:precedingActionLink` properties will be explained in detail in the following sections.
+
+```json
+{
+    "@context": {
+      "sh": "http://www.w3.org/ns/shacl#",
+      "wasa": "https://vocab.sti2.at/wasa/",
+      "weather": "https://vocab.sti2.at/weather/",
+      "@vocab": "http://schema.org/"
+    },
+    "@type": "SearchAction",
+    "name": "GetCurrentWeather",
+    "actionstatus": "PotentialActionStatus",
+    "description": "Get current weather forecast at a location by geo-coordinates",
+    "target": {
+        // an EntryPoint instance that describes the invocation mechanism of the action
+    },
+    "@id": "/api/rdf/action/100665a8-a0de-11ea-8c03-c14ba487f916",
+    "wasa:actionShape": {
+        // a SHACL Node Shape describing the input and output parameters
+    },
+    "wasa:precedingActionLink": [
+      {
+        // the mapping of the output parameters of an action to the input parameters of another action.
+      }
+    ]
+  }
+```
 
 ## Resource Linking
 
