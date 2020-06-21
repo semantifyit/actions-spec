@@ -10,7 +10,7 @@
 # Introduction
 The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
 
-The WASA language sees Web APIs as a collection of actions that can be taken on a resource. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use schema.org and its extensions. A Web API publisher can define constraints over the input and output of an action with SHACL shapes.
+The WASA language sees Web APIs as a collection of actions that can be taken on a resource. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use schema.org and its extensions. A WASA API publisher can define constraints over the input and output of an action with SHACL shapes.
 
 ?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
 
@@ -97,9 +97,9 @@ In this section, we explain the WASA specification with a running example. We an
 
 ?> **Notation:** The types and properties written in the flowing text are `emphasized`. The first letter of types are capitalized (e.g. `Thing`). Properties are written in camel case (e.g. `potentialAction`). Any type or property without a prefix is from schema.org vocabulary. The types and properties introduced by the WASA language represented with _wasa_ prefix. _sh_ is used for SHACL types and properties. 
 
-##  Web API
+##  WASA API
 
-The WASA specification uses the `WebAPI` type as the main type to annotate the entry point of a Web API. This type allows the definition of the API documentation (machine- and human-readable) as well as some non-functional metadata about the API.
+The WASA specification uses the `WebAPI` type as the main type to annotate the entry point of a WASA API. This type allows the definition of the API documentation (machine- and human-readable) as well as some non-functional metadata about the API.
 
 **Thing  > Intangible  > Service  > [WebAPI](http://schema.org/WebAPI)**
 
@@ -139,29 +139,29 @@ The most important property of this type is the `documentation` property. This p
   "@id": "http://actions.semantify.it/api/rdf/webapi/100665a0-a0de-11ea-8c03-c14ba487f916"
 }
 ```
-<div class="caption">Web API example</div>
+<div class="caption">WebAPI example</div>
 
 ## API Documentation 
 
-A documentation of a Web API is an instance of the `CreativeWork` type.
+A documentation of a WASA API is an instance of the `CreativeWork` type.
 
 **Thing > [CreativeWork](http://schema.org/CreativeWork)**
 
 | Property | Range         | Description                                                 |
 |-------------------|------------------------|----------------------------------------------------------------------|
-| about             | Action                 | An operation on a resource of a Web API                              |
-| accountablePerson | Person or Organization | A person or organization that is accountable from the Web API        |
-| author            | Person or Organization | The author of the Web API documentation                              |
-| contributor       | Person or Organization | A person or organization who contributed to the Web API in some way. |
+| about             | Action                 | An operation on a resource of a  WASA API                              |
+| accountablePerson | Person or Organization | A person or organization that is accountable from the WASA API       |
+| author            | Person or Organization | The author of the WASA API documentation                              |
+| contributor       | Person or Organization | A person or organization who contributed to the WASA API in some way. |
 | encodingFormat    | Text                   | A media type. Typically application/ld+json or text/html             |
-| license           | CreativeWork           | The license of the Web API documentation                             |
+| license           | CreativeWork           | The license of the WASA API documentation                             |
 | name              | Text                   | The name of the documentation                                        |
 
-!> A Web API can have multiple documentations. However a WASA client does not have to understand all documentations. A WASA client should be able to process the documentations that are encoded in an RDF serialization format (e.g. application/ld+json). 
+!> A WASA API can have multiple documentations. However a WASA Client does not have to understand all documentations. A WASA client should be able to process the documentations that are encoded in an RDF serialization format (e.g. application/ld+json). 
 
-The `about` property takes `Action` instances as value. The values of the `about` property comprise a set of operation descriptions (i.e. Potential Actions) that can be taken on a resource on a Web API.  The value of the `encodingFormat` property indicates to the client how the API can be processed. The properties with the range `Person` or `Organization` typically contain contact information such as name, e-mail and URL of the person or organization's website.
+The `about` property takes `Action` instances as value. The values of the `about` property comprise a set of operation descriptions (i.e. Potential Actions) that can be taken on a resource on a WASA API.  The value of the `encodingFormat` property indicates to the client how the API can be processed. The properties with the range `Person` or `Organization` typically contain contact information such as name, e-mail and URL of the person or organization's website.
 
-See the value of the `documentation` property in the _Web API example_ above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
+See the value of the `documentation` property in the _WebAPI example_ above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
 
 
 ## Resource Operation Description
@@ -214,7 +214,7 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
     ]
   }
 ```
-<div class="caption">Resource Operation Description example</div>
+<div id="caption-resource-operation" class="caption">Resource Operation Description example</div>
 
 > _TODO_ update example with error and potentialActionLink properties.
 
@@ -223,7 +223,7 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
 An operation can have multiple error messages that can occur after a request. Alongside the HTTP error code that is returned in the request header, more specific errors can be specified. 
 The description of these potential errors that can occur during an operation is done via the instances of `wasa:Error` type. 
 
-**Thing > Intangible > StructuredValue > PropertyValue > Error**
+**Thing > Intangible > StructuredValue > PropertyValue > wasa:Error**
 
 | Property    | Range | Description                                                                                           |
 |-------------|-------|-------------------------------------------------------------------------------------------------------|
@@ -238,10 +238,13 @@ For a potential error, a `propertyID` can be specified, which is typically an ID
 
 ### Invocation
 
-The invocation mechanism of an operation is specified with an instance of the `EntryPoint` type as the value of the `target` property. 
+The invocation mechanism of an operation is specified with an instance of the `EntryPoint` type as the value of the `target` property. An entry point is may either describe a generic endpoint to which a WASA Client sends requests or a SPARQL endpoint of a triple store to which a WASA Client sends a SPARQL query generated based on a Potential Action. 
 
 
 **Thing >  Intangible > [EntryPoint](http://schema.org/EntryPoint)**
+
+**Thing >  Intangible > [EntryPoint](http://schema.org/EntryPoint) > wasa:SPARQLEndpoint**
+
 
 | Property | Range |  Description                                                                                                                           |
 |-------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -252,15 +255,31 @@ The invocation mechanism of an operation is specified with an instance of the `E
 
 The interaction mechanism of a client and an API that serves actions is based on exchanging action instances with different status ([see `actionStatus` property and its possible values](#resource-operation-description).) 
 
-?> The interaction mechanism of a WASA Client and a WASA Web API resembles to [GraphQL](https://graphql.org/learn/serving-over-http/).  
+?> The interaction mechanism of a WASA Client and a WASA API resembles to [GraphQL](https://graphql.org/learn/serving-over-http/).  
 
-A WASA client and Web API exchange `Action` instances. This requires the value of the `contentType` and `encodingFormat` properties to be an RDF serialization format. The `httpMethod` property specifies the HTTP method of the request.
+The contentType and encodingFormat properties allows specifying the data format of the response of a WASA API and a request of a WASA Client respectively. A WASA client and an API exchange `Action` instances. This requires the value of the `contentType` and `encodingFormat` properties to be an RDF serialization format. The `httpMethod` property specifies the HTTP method of the request.
 
 !> Although any RDF serialization format can be used, the JSON-LD format is recommended. Since the representation of action instances in may become quite large, POST requests are preferred. 
 
-The value of the `urlTemplate` property represents the endpoint to which a WASA client should send a request.
+The value of the `urlTemplate` property represents the endpoint to which a WASA Client should send a request.
 
-!> The endpoint may represent a single resource (e.g., _api.openweathermap.org/data/2.5/weather_) or the entire API as a graph, similar to the GraphQL approach (e.g., _action.semantify.it/api/openweather/action/_).
+!> The endpoint may represent a single resource (e.g., _api.openweathermap.org/data/2.5/weather_) or the entire API as a graph, similar to the GraphQL approach (e.g., _action.semantify.it/api/openweather/action/_). In case of the entry point being a `wasa:SPARQLEndpoint` instance, then the `urlTemplate` property represents a SPARQL endpoint.
+
+The example below shows a target definition on the potential action in [Resource Operation Description example](#caption-resource-operation).
+
+```json
+//...
+   "target": {
+      "@type": "EntryPoint",
+      "httpMethod": "POST",
+      "contentType": "application/ld+json",
+      "encodingType": "application/ld+json",
+      "urlTemplate": "/api/action/100665a0-a0de-11ea-8c03-c14ba487f916/"
+    }
+//...
+```
+
+> _TODO_ add an example of SPARQL endpoint abstraction with actions
 
 ### Action Shape
 

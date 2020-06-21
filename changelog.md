@@ -26,3 +26,4 @@
 ### v0.4.0
 * added error specification
 * added invocation specification
+* refactor some definitions (e.g., Web API to WASA API)

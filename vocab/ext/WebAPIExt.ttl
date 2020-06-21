@@ -31,6 +31,10 @@ wasa:ActionLink a rdfs:Class;
 wasa:PropertyMap a rdfs:Class;
 	rdfs:subClassOf schema:Intangible .
 
+wasa:SPARQLEndpoint a rdfs:Class;
+	rdfs:label "SPARQL Endpoint";
+	rdfs:label "A SPARQL endpoint defined as an invocation mechanism of an action."
+	rdfs:subClassOf schema:EntryPoint .
 ## properties
 
 wasa:httpStatusCode a rdf:Property;
