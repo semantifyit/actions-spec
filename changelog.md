@@ -17,3 +17,8 @@
 
 ### v0.3.0
 * Added Resource Operation Description
+
+### v0.3.1
+
+* Website: caption style refactoring
+* examples are refactored for better document structure

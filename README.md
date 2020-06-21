@@ -4,7 +4,7 @@
 |----------------|--------------------------------------------------------------|
 | **Editor**:        | [Umutcan Şimşek](http://umutcan.eu), University of Innsbruck |
 | **Contributors:**   | [Thibault Gerrier](https://www.sti-innsbruck.at/about/team/details/thibault-gerrier), University of Innsbruck    |
-| **Latest Version:** | [v0.2.1](changelog.md ":target=_blank") ({docsify-updated})                                                      |
+| **Latest Version:** | [v0.3.1](changelog.md ":target=_blank") ({docsify-updated})                                                      |
 
 
 # Introduction
@@ -24,7 +24,7 @@ A domain specification is a process to create a domain specific pattern, which i
 
 ![ds process](_media/ds-process.svg  ':class=figure' )
 
-<center><span class="caption">The domain specification process.</span></center>
+<div class="caption">The domain specification process.</div>
 
 
 !> **_Relationship between SHACL and Domain Specifications_**: SHACL is a language that is built around the notion of *shape* in order to verify RDF graphs. A shape is either a node shape that applies constraints on nodes in an RDF graph, or a property shape that does the same to properties. In principle, we use SHACL as is, but we apply stricter syntax rules in terms of which constraint components can be applied on which type of shapes and how the shapes are interpreted (semantics). For instance, multiple target definitions are interpreted as disjunction in SHACL, but as a conjunction in domain specification approach.
@@ -112,7 +112,6 @@ The WASA specification uses the `WebAPI` type as the main type to annotate the e
 
 The most important property of this type is the `documentation` property. This property allows a definition of documentation as an instance of type CreativeWork. This documentation can be processed by a client (human or machine) to consume the API.
 
-### Example
 
 ```json
 {
@@ -140,7 +139,7 @@ The most important property of this type is the `documentation` property. This p
   "@id": "http://actions.semantify.it/api/rdf/webapi/100665a0-a0de-11ea-8c03-c14ba487f916"
 }
 ```
-
+<div class="caption">Web API example</div>
 
 ## API Documentation 
 
@@ -162,9 +161,7 @@ A documentation of a Web API is an instance of the `CreativeWork` type.
 
 The `about` property takes `Action` instances as value. The values of the `about` property comprise a set of operation descriptions (i.e. Potential Actions) that can be taken on a resource on a Web API.  The value of the `encodingFormat` property indicates to the client how the API can be processed. The properties with the range `Person` or `Organization` typically contain contact information such as name, e-mail and URL of the person or organization's website.
 
-### Example
-
-See the value of the `documentation` property in the [Web API example](#example) above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
+See the value of the `documentation` property in the _Web API example_ above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
 
 
 ## Resource Operation Description
@@ -188,7 +185,6 @@ Thing > [Action](http://schema.org/Action)
 
 Alongside the name and the description of the operation, we can define potential error messages and status codes (via the `error` property), linked actions (via `wasa:potentialActionLink` and `wasa:precedingActionLink` properties), the invocation mechanism (via `target` property) and various input and output specifications (via `wasa:actionShape`).
 
-### Example
 
 The example below shows the _GetCurrentWeather_ action. Since it is an operation description, the `actionStatus` property has `PotentialActionStatus`. The values of `target`, `wasa:actionShape` and `wasa:precedingActionLink` properties will be explained in detail in the following sections.
 
@@ -218,6 +214,7 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
     ]
   }
 ```
+<div class="caption">Resource Operation Description example</div>
 
 ## Resource Linking
 
