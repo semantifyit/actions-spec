@@ -10,5 +10,6 @@
 .caption {
     text-align: center;
     font-weight: bold;
+    margin: auto;
     width: 100%;
 }
