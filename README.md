@@ -8,9 +8,9 @@
 
 
 # Introduction
-The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a Web API perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the creation of semantically annotated Web APIs. 
+The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a Web API perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the creation of WASA APIs. 
 
-The WASA language sees Web APIs as a collection of actions that can be taken on a graph resources. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use domain-specific patterns that restrict and extend the schema.org vocabulary. An API publisher can define constraints over the input and output of an action via these pattern that are defined with SHACL shapes.
+The WASA language sees Web APIs as a collection of actions that can be taken on a graph resources. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use [domain-specific patterns](#def-domain-specific-pattern) that restrict and extend the schema.org vocabulary. An API publisher can define constraints over the input and output of an action via these pattern that are defined with SHACL shapes.
 
 ?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
 ?> The http://vocab.sti2.at/wasa/ interface is under construction. For now the vocabulary can be found in [Turtle format](vocab/ext/WebAPIExt.ttl ':ignore').
@@ -23,6 +23,13 @@ Below we first give some definitions of the notions that are used in this specif
   
 
 > **WASA API:** A collection of potential actions that are created according to WASA specification. 
+
+</span>
+
+<span id="def-domain-specific-pattern">
+  
+
+> **Domain-specific pattern:** A domain specific pattern . 
 
 </span>
 
@@ -172,8 +179,7 @@ The `about` property takes `Action` instances as value. The values of the `about
 See the value of the `documentation` property in the _WebAPI example_ above. Note that value of the of the `encodingFormat` property is _application/ld+json_. 
 
 
-## Resource Operation Description
-
+## Potential Action
 The building blocks of an API annotated with WASA are instances of `Action` which describe the operations that can be taken on a resource.
 
 Thing > [Action](http://schema.org/Action)
@@ -290,6 +296,12 @@ The example below shows a target definition on the potential action in [Resource
 > _TODO_ add an example of SPARQL endpoint abstraction with actions
 
 ### Action Shape
+
+The action shape defines a [domain-specific pattern](#def-domain-specific-pattern) that describes the input and output parameters of a potential action. The [domain-specific pattern](#def-domain-specific-pattern) is defined with a [SHACL Node Shape](https://www.w3.org/TR/shacl/#node-shapes). It defines three local properties, namely `object`, result, and authentication.
+
+!> Although the [domain-specification process](#domain-specification) is generic to any restriction and extension of schema.org, an action shape defines object, result and authentication local properties by default. The restrictions defined on the values of these properties are used to verify requests and responses. See [WASA Client-API Interaction Specification](_interaction.md).  
+
+The `object` property in the [domain-specific pattern](#def-domain-specific-pattern) specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the domain specification process, in order to define the input parameters.
 
 ### Action Linking
 
