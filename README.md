@@ -13,16 +13,18 @@ The schema.org vocabulary is a de facto industrial standard for creating semanti
 The WASA language sees Web APIs as a collection of actions that can be taken on a graph resources. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use domain-specific patterns that restrict and extend the schema.org vocabulary. An API publisher can define constraints over the input and output of an action via these pattern that are defined with SHACL shapes.
 
 ?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
+?> The http://vocab.sti2.at/wasa/ interface is under construction. For now the vocabulary can be found in [Turtle format](vocab/ext/WebAPIExt.ttl ':ignore').
 
 
-Below we first give some definitions of the notions that are used in this speciication. Afterward, we first introduce the domain specification approach and domain-specific patterns. We follow with the relevant types and properties of schema.org for creating Web APIs defined with WASA. We also explain the usage of WASA language from a practical perspective with a running example and give some use cases for the potential usage of the action annotations.
+Below we first give some definitions of the notions that are used in this specification. Afterward, we first introduce the domain specification approach and domain-specific patterns. We follow with the relevant types and properties of schema.org for creating Web APIs defined with WASA. We also explain the usage of WASA language from a practical perspective with a running example and give some use cases for the potential usage of the action annotations.
 
 # Definitions
-<span id="def-wasa-api" class="definition">
-  WASA API:</span>
+<span id="def-wasa-api">
+  
 
-?>A collection of potential actions that are created according to WASA specification. 
+> **WASA API:** A collection of potential actions that are created according to WASA specification. 
 
+</span>
 
 # Domain Specification
 
