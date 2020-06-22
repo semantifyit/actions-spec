@@ -27,3 +27,4 @@
 * added error specification
 * added invocation specification
 * refactor some definitions (e.g., Web API to WASA API)
+* added the Definitions section
