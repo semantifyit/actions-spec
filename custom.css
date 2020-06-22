@@ -13,3 +13,7 @@
     margin: auto;
     width: 100%;
 }
+
+.definition {
+    font-weight: bold;
+}

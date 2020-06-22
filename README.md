@@ -8,14 +8,20 @@
 
 
 # Introduction
-The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a web services perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the annotation of HTTP APIs. 
+The schema.org vocabulary is a de facto industrial standard for creating semantically annotated data. The vocabulary with its actions subset that allows to describe not only entities on the web, but also actions that can be taken on them. The Web Service Annotation with Schema.org (WASA) language puts schema.org actions into a Web API perspective by restricting and extending it with the help of the [domain specification](#domain-specification) process for the creation of semantically annotated Web APIs. 
 
-The WASA language sees Web APIs as a collection of actions that can be taken on a resource. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use schema.org and its extensions. A WASA API publisher can define constraints over the input and output of an action with SHACL shapes.
+The WASA language sees Web APIs as a collection of actions that can be taken on a graph resources. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use domain-specific patterns that restrict and extend the schema.org vocabulary. An API publisher can define constraints over the input and output of an action via these pattern that are defined with SHACL shapes.
 
 ?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
 
 
-Below we first introduce the domain specification approach and domain-specific patterns. Afterwards we show the relevant types and properties of schema.org for action annotation. We also explain the usage of WASA language from a practical perspective and give some use cases for the potential usage of annotated Web APIs.
+Below we first give some definitions of the notions that are used in this speciication. Afterward, we first introduce the domain specification approach and domain-specific patterns. We follow with the relevant types and properties of schema.org for creating Web APIs defined with WASA. We also explain the usage of WASA language from a practical perspective with a running example and give some use cases for the potential usage of the action annotations.
+
+# Definitions
+<span id="def-wasa-api" class="definition">
+  WASA API:</span>
+
+?>A collection of potential actions that are created according to WASA specification. 
 
 
 # Domain Specification
@@ -99,7 +105,7 @@ In this section, we explain the WASA specification with a running example. We an
 
 ##  WASA API
 
-The WASA specification uses the `WebAPI` type as the main type to annotate the entry point of a WASA API. This type allows the definition of the API documentation (machine- and human-readable) as well as some non-functional metadata about the API.
+The WASA specification uses the `WebAPI` type as the main type to annotate the entry point of a [WASA API](#def-wasa-api). This type allows the definition of the API documentation (machine- and human-readable) as well as some non-functional metadata about the API.
 
 **Thing  > Intangible  > Service  > [WebAPI](http://schema.org/WebAPI)**
 
