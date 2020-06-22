@@ -299,16 +299,154 @@ The example below shows a target definition on the potential action in [Resource
 
 The action shape defines a [domain-specific pattern](#def-domain-specific-pattern) that describes the input and output parameters of a potential action. The [domain-specific pattern](#def-domain-specific-pattern) is defined with a [SHACL Node Shape](https://www.w3.org/TR/shacl/#node-shapes). It defines three local properties, namely `object`, result, and authentication.
 
-!> Although the [domain-specification process](#domain-specification) is generic to any restriction and extension of schema.org, an action shape defines object, result and authentication local properties by default. The restrictions defined on the values of these properties are used to verify requests and responses. See [WASA Client-API Interaction Specification](_interaction.md).  
+```json
+//...
+"wasa:actionShape": {
+      "@type": "http://www.w3.org/ns/shacl#NodeShape",
+      "sh:property": [
+        {
+          "@id": "/api/rdf/prop/100701e7-a0de-11ea-8c03-c14ba487f916",
+          "sh:path": {
+            "@id": "object"
+          },
+          //...
+        },
+        {
+          "@id": "/api/rdf/prop/8e87d870-a104-11ea-b5b6-3596ef396fa2",
+          "sh:path": {
+            "@id": "wasa:authentication"
+          },
+          //...
+        },
+        {
+          "@id": "/api/rdf/prop/100701e8-a0de-11ea-8c03-c14ba487f916",
+          "sh:path": {
+            "@id": "result"
+          },
+          //...
+    },
+    ]
+```
+  
+<div class="caption">An action shape example</div>
 
-The `object` property in the [domain-specific pattern](#def-domain-specific-pattern) specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the domain specification process, in order to define the input parameters.
+!> Although the [domain-specification process](#domain-specification) is generic to any restriction and extension of schema.org, an action shape defines object, result and authentication local properties by default. The restrictions defined on the values of these properties are used to verify requests and responses. See [WASA Client-API Interaction Specification](_interaction.md).
+
+The `object` property in the [domain-specific pattern](#def-domain-specific-pattern) specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the [domain specification process](#domain-specification), in order to define the input parameters.
+
+The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a weather:WeatherReport instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action.
+Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
+```json
+        {
+          "@id": "/api/rdf/prop/100701e7-a0de-11ea-8c03-c14ba487f916",
+          "sh:path": {
+            "@id": "object"
+          },
+          "sh:group": {
+            "@id": "wasa:Input"
+          },
+          "sh:minCount": 1,
+          "sh:maxCount": 1,
+          "sh:class": [
+            {
+              "@id": "weather:WeatherReport"
+            }
+          ],
+          "sh:node": {
+            "sh:property": [
+              {
+                "@id": "/api/rdf/prop/df11fca0-a0ee-11ea-a6f9-bb51539b9814",
+                "sh:path": {
+                  "@id": "contentLocation"
+                },
+                "sh:minCount": 1,
+                "sh:maxCount": 1,
+                "sh:class": [
+                  {
+                    "@id": "Place"
+                  }
+                ],
+                "sh:node": {
+                  "sh:property": [
+                    {
+                      "@id": "/api/rdf/prop/e8f67cf0-a0ee-11ea-a6f9-bb51539b9814",
+                      "sh:path": {
+                        "@id": "geo"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:class": [
+                        {
+                          "@id": "GeoCoordinates"
+                        }
+                      ],
+                      "sh:node": {
+                        "sh:property": [
+                          {
+                            "@id": "/api/rdf/prop/eb83de90-a0ee-11ea-a6f9-bb51539b9814",
+                            "sh:path": {
+                              "@id": "latitude"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/ee6839d0-a0ee-11ea-a6f9-bb51539b9814",
+                            "sh:path": {
+                              "@id": "longitude"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "@id": "/api/rdf/prop/f2b5e710-a104-11ea-b5b6-3596ef396fa2",
+                "sh:path": {
+                  "@id": "variableMeasured"
+                },
+                "sh:minCount": 1,
+                "sh:maxCount": 1,
+                "sh:class": [
+                  {
+                    "@id": "PropertyValue"
+                  }
+                ],
+                "sh:node": {
+                  "sh:property": [
+                    {
+                      "@id": "/api/rdf/prop/fc266fe0-a104-11ea-b5b6-3596ef396fa2",
+                      "sh:path": {
+                        "@id": "unitCode"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:in": {
+                        "@list": [
+                          "CE",
+                          "FA"
+                        ]
+                      },
+                      "sh:datatype": "string"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+```
+
 
 ### Action Linking
 
-
-In many cases, an operation on a resource of an API requires the response of another operation on another resource in the same or a different API. To support such cases, we allow linking of property shapes as the value of a property whose value needs to be retrieved from the result of another action. There are two ways to do this linking. 
-
-The simplest way is when the entire result object is needed as an input. This can be accomplished by just linking a node shape. See the example below for an action to search bus stops.
+> _TODO_ put an example of action linking with geocoding api
 
 
 ## Grounding and Lifting

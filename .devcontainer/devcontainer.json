@@ -17,7 +17,8 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"yzhang.markdown-all-in-one",
-		"umutsims.prefix-cc"
+		"umutsims.prefix-cc",
+		"mdickin.markdown-shortcuts"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

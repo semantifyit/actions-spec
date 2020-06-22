@@ -6,6 +6,8 @@
 * added invocation specification
 * refactor some definitions (e.g., Web API to WASA API)
 * added the Definitions section
+* added action shape
+* added input definition (object)
 
 ### v0.3.1
 
