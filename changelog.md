@@ -1,6 +1,10 @@
 ## Changelog {docsify-ignore}
 
 
+### v0.5.0
+* completed input definition (object)
+* added brief explanation for grounding and lifting
+
 ### v0.4.0
 * added error specification
 * added invocation specification

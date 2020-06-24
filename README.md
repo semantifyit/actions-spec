@@ -4,7 +4,7 @@
 |----------------|--------------------------------------------------------------|
 | **Editor**:        | [Umutcan Şimşek](http://umutcan.eu), University of Innsbruck |
 | **Contributors:**   | [Thibault Gerrier](https://www.sti-innsbruck.at/about/team/details/thibault-gerrier), University of Innsbruck    |
-| **Latest Version:** | [v0.4.0](changelog.md ":target=_blank") ({docsify-updated})                                                      |
+| **Latest Version:** | [v0.5.0](changelog.md ":target=_blank") ({docsify-updated})                                                      |
 
 
 # Introduction
@@ -334,8 +334,7 @@ The action shape defines a [domain-specific pattern](#def-domain-specific-patter
 
 The `object` property shape in the action shape specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the [domain specification process](#domain-specification), in order to define the input parameters.
 
-The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a weather:WeatherReport instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action.
-Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
+The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a weather:WeatherReport instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action. Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
 ```json
         {
           "@id": "/api/rdf/prop/100701e7-a0de-11ea-8c03-c14ba487f916",
@@ -449,13 +448,20 @@ Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constra
 > _TODO_ put an example of action linking with geocoding api
 
 
-## Grounding and Lifting
+# Grounding and Lifting
 
-### Grounding (Request Mapping)
+There are many Web APIs in the wild that are served over HTTP and follow REST architectural design to some extent. We provide a non-normative guideline for annotating these APIs with WASA. The annotation of existing Web APIs have two major components:
+
+1. Mapping of WASA Requests (Active Actions) to an HTTP request (Grounding)
+2. Mapping of responses of a Web API to WASA Responses (Completed or Failed Actions) (Lifting)
+
+Below we describe these two processes and a possible way of implementing them with established mapping languages.
+
+## Grounding (Request Mapping)
 
 > _TODO_ will be done with an extended version of Xquery and Handlebars.
 
-### Lifting (Response Mapping)
+## Lifting (Response Mapping)
 
 RML example
 
