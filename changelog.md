@@ -2,8 +2,10 @@
 
 
 ### v0.5.0
-* completed input definition (object)
+* completed input specification (object)
 * added brief explanation for grounding and lifting
+* completed authentication specification
+* completed output specification (result)
 
 ### v0.4.0
 * added error specification
@@ -11,7 +13,7 @@
 * refactor some definitions (e.g., Web API to WASA API)
 * added the Definitions section
 * added action shape
-* added input definition (object)
+* added input specification (object)
 
 ### v0.3.1
 

@@ -29,7 +29,7 @@ Below we first give some definitions of the notions that are used in this specif
 <span id="def-domain-specific-pattern">
   
 
-> **Domain-specific pattern:** A domain specific pattern . 
+> **Domain-specific pattern:** An extended restriction of the schema.org vocabulary specified with a SHACL Node Shape.
 
 </span>
 
@@ -228,7 +228,7 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
     ]
   }
 ```
-<div id="caption-resource-operation" class="caption">Resource Operation Description example</div>
+<div id="caption-resource-operation" class="caption">Potential Action example</div>
 
 > _TODO_ update example with error and potentialActionLink properties.
 
@@ -292,6 +292,7 @@ The example below shows a target definition on the potential action in [Resource
     }
 //...
 ```
+<div class="caption">Invocation description of a potential action</div>
 
 > _TODO_ add an example of SPARQL endpoint abstraction with actions
 
@@ -441,7 +442,232 @@ The example below shows the definition of the input of _GetCurrentWeather_ actio
           }
         }
 ```
+<div class="caption">Input specification by an action shape</div>
 
+An action may require authentication to be conducted. The `wasa:authentication` property specifies the authentication information that needs to be provided by the client to carry out the operation. The range is a type that is more specific than `wasa:AuthenticationSpecification`. 
+
+!> WASA provides three subtypes of `wasa:AuthenticationSpecification`, namely `wasa:FormBasedAuthentication`, `wasa:HTTPBasicAuthentication` and `wasa:TokenAuthentication`. The range can be further restricted to one of these types or another subtype of `wasa:AuthenticationSpecification` that is defined by another extension.
+
+The example below specifies a wasa:TokenAuthentication instance with the SHACL propery shape with the `wasa:authentication` path. This indicates that the client needs to provide a single token value (e.g. an API key) in order to conduct this action.
+
+```json
+        {
+          "@id": "/api/rdf/prop/8e87d870-a104-11ea-b5b6-3596ef396fa2",
+          "sh:path": {
+            "@id": "wasa:authentication"
+          },
+          "sh:group": {
+            "@id": "wasa:Input"
+          },
+          "sh:minCount": 1,
+          "sh:maxCount": 1,
+          "sh:class": [
+            {
+              "@id": "wasa:TokenAuthentication"
+            }
+          ],
+          "sh:node": {
+            "sh:property": [
+              {
+                "@id": "/api/rdf/prop/b5916fd0-a104-11ea-b5b6-3596ef396fa2",
+                "sh:path": {
+                  "@id": "value"
+                },
+                "sh:minCount": 1,
+                "sh:maxCount": 1,
+                "sh:datatype": "string"
+              }
+            ]
+          }
+        }
+```
+<div class="caption">Authentication specification by an action shape</div>
+
+The `result` property in the domain-specific pattern specifies the response that should be returned by the server. Similar to the `object` property, the range of the `result` property is a type that is more specific than `Thing`, and it can be further restricted to define the output parameters. 
+
+Similar to the input specification, the example below shows that GetCurrentWeather action returns 
+
+```json
+        {
+          "@id": "/api/rdf/prop/100701e8-a0de-11ea-8c03-c14ba487f916",
+          "sh:path": {
+            "@id": "result"
+          },
+          "sh:group": {
+            "@id": "wasa:Output"
+          },
+          "sh:minCount": 1,
+          "sh:maxCount": 1,
+          "sh:class": [
+            {
+              "@id": "weather:WeatherReport"
+            }
+          ],
+          "sh:node": {
+            "sh:property": [
+              {
+                "@id": "/api/rdf/prop/1d3b12a0-a0ef-11ea-a6f9-bb51539b9814",
+                "sh:path": {
+                  "@id": "dataFeedElement"
+                },
+                "sh:minCount": 1,
+                "sh:maxCount": 1,
+                "sh:class": [
+                  {
+                    "@id": "weather:WeatherMeasurement"
+                  }
+                ],
+                "sh:node": {
+                  "sh:property": [
+                    {
+                      "@id": "/api/rdf/prop/1f5f2b20-a0ef-11ea-a6f9-bb51539b9814",
+                      "sh:path": {
+                        "@id": "dateCreated"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:datatype": "date"
+                    },
+                    {
+                      "@id": "/api/rdf/prop/2db0c990-a0ef-11ea-a6f9-bb51539b9814",
+                      "sh:path": {
+                        "@id": "weather:apparentTemperature"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:class": [
+                        {
+                          "@id": "QuantitativeValue"
+                        }
+                      ],
+                      "sh:node": {
+                        "sh:property": [
+                          {
+                            "@id": "/api/rdf/prop/1490fa30-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "value"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/1e311e80-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "minValue"
+                            },
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/1f9d58b0-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "maxValue"
+                            },
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/20f128e0-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "unitCode"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:in": {
+                              "@list": [
+                                "CE",
+                                "FA"
+                              ]
+                            },
+                            "sh:datatype": "string"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@id": "/api/rdf/prop/71fe0510-a106-11ea-b5b6-3596ef396fa2",
+                      "sh:path": {
+                        "@id": "name"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:datatype": "string"
+                    },
+                    {
+                      "@id": "/api/rdf/prop/76049930-a106-11ea-b5b6-3596ef396fa2",
+                      "sh:path": {
+                        "@id": "description"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:datatype": "string"
+                    },
+                    {
+                      "@id": "/api/rdf/prop/ae55b670-a106-11ea-b5b6-3596ef396fa2",
+                      "sh:path": {
+                        "@id": "weather:temperature"
+                      },
+                      "sh:minCount": 1,
+                      "sh:maxCount": 1,
+                      "sh:class": [
+                        {
+                          "@id": "QuantitativeValue"
+                        }
+                      ],
+                      "sh:node": {
+                        "sh:property": [
+                          {
+                            "@id": "/api/rdf/prop/1490fa30-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "value"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/1e311e80-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "minValue"
+                            },
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/1f9d58b0-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "maxValue"
+                            },
+                            "sh:maxCount": 1,
+                            "sh:datatype": "double"
+                          },
+                          {
+                            "@id": "/api/rdf/prop/20f128e0-a107-11ea-b5b6-3596ef396fa2",
+                            "sh:path": {
+                              "@id": "unitCode"
+                            },
+                            "sh:minCount": 1,
+                            "sh:maxCount": 1,
+                            "sh:in": {
+                              "@list": [
+                                "CE",
+                                "FA"
+                              ]
+                            },
+                            "sh:datatype": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+```
+<div class="caption">Output specification by an action shape example</div>
 
 ### Action Linking
 
