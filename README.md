@@ -330,9 +330,9 @@ The action shape defines a [domain-specific pattern](#def-domain-specific-patter
   
 <div class="caption">An action shape example</div>
 
-!> Although the [domain-specification process](#domain-specification) is generic to any restriction and extension of schema.org, an action shape defines object, result and authentication local properties by default. The restrictions defined on the values of these properties are used to verify requests and responses. See [WASA Client-API Interaction Specification](_interaction.md).
+!> Although the [domain-specification process](#domain-specification) is generic to any restriction and extension of schema.org, an action shape defines object, result and authentication SHACL property shapes by default. The restrictions defined on the values of these properties are used to verify requests and responses. See [WASA Client-API Interaction Specification](_interaction.md).
 
-The `object` property in the [domain-specific pattern](#def-domain-specific-pattern) specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the [domain specification process](#domain-specification), in order to define the input parameters.
+The `object` property shape in the action shape specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the [domain specification process](#domain-specification), in order to define the input parameters.
 
 The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a weather:WeatherReport instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action.
 Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
