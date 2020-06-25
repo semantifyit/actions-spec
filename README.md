@@ -13,6 +13,7 @@ The schema.org vocabulary is a de facto industrial standard for creating semanti
 The WASA language sees Web APIs as a collection of actions that can be taken on a graph resources. These actions can be linked explicitly, allowing clients to achieve certain goals without hardcoding the orchestration of these actions (i.e. order of action invocation). As a domain model to describe input and output parameters, we use [domain-specific patterns](#def-domain-specific-pattern) that restrict and extend the schema.org vocabulary. An API publisher can define constraints over the input and output of an action via these pattern that are defined with SHACL shapes.
 
 ?> The namespace of WASA language is **http://vocab.sti2.at/wasa/**. The suggested prefix is **wasa**.
+
 ?> The http://vocab.sti2.at/wasa/ interface is under construction. For now the vocabulary can be found in [Turtle format](vocab/ext/WebAPIExt.ttl ':ignore').
 
 
@@ -696,7 +697,7 @@ RML example
 
 # Tools
 
-There is a tool under development to support the creation of schema.org action annotations. It will be published on http://actions.semantify.it (currently has an older version and does not fully support WASA) soon. Until then, you can reach the [source code](https://github.com/semantifyit/api-actions) and try the development version on your own hardware. We also provide docker containers.
+There is a tool under development to support the creation of WASA APIs. It will be published on http://actions.semantify.it (currently has an older version and does not fully support WASA) soon. Until then, you can reach the [source code](https://github.com/semantifyit/api-actions) and try the development version on your own hardware. We also provide docker containers.
 
 # Use Case: Dialog Generation from API Annotations
 
