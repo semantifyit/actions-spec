@@ -6,6 +6,7 @@
 * added brief explanation for grounding and lifting
 * completed authentication specification
 * completed output specification (result)
+* added initial tool section
 
 ### v0.4.0
 * added error specification

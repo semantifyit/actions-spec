@@ -335,7 +335,7 @@ The action shape defines a [domain-specific pattern](#def-domain-specific-patter
 
 The `object` property shape in the action shape specifies the input required to complete the operation the potential action describes. The range of the `object` property is a type that is more specific than `Thing`. The range can be further restricted in accordance to the [domain specification process](#domain-specification), in order to define the input parameters.
 
-The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a weather:WeatherReport instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action. Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
+The example below shows the definition of the input of _GetCurrentWeather_ action. The property path with the path object defines a `weather:WeatherReport` instance as an input. The action requires the geocoordinates (via `contentLocation/geo/latitude` and `contentLocation/geo/longitude` properties) and a unit value (via `variableMeasured/unitCode`) to run the action. Note that the [SHACL constraint components](https://www.w3.org/TR/shacl/#constraints) are used on the property shapes. For example, cardinality constraints are used to indicate required parameters. The _sh:in_ constraint component is used to restrict the range of `unitCode` property to a list of values.
 ```json
         {
           "@id": "/api/rdf/prop/100701e7-a0de-11ea-8c03-c14ba487f916",
@@ -485,7 +485,7 @@ The example below specifies a wasa:TokenAuthentication instance with the SHACL p
 
 The `result` property in the domain-specific pattern specifies the response that should be returned by the server. Similar to the `object` property, the range of the `result` property is a type that is more specific than `Thing`, and it can be further restricted to define the output parameters. 
 
-Similar to the input specification, the example below shows that GetCurrentWeather action returns 
+Similar to the input specification, the example below shows that _GetCurrentWeather_ action returns a weather report with a single weather measurement. The `weather:WeatherReport` is a subtype of [`schema:DataFeed`](http://schema.org/DataFeed). It can normally have multiple `weather:WeatherMeasurement` instances, however in this case the SHACL cardinality constraints require a weather report to have one and only one weather measurement. The `weather:WeatherMeasurement` type provides the weather condition (via [`schema:name`](http://schema.org/name)) date (via [`schema:dateCreated`](http://schema.org/dateCreated)) as well as measured temperature and apparent temperature (via `weather:temperature` and `weather:apparentTemperature`).
 
 ```json
         {
@@ -695,6 +695,8 @@ RML example
 
 
 # Tools
+
+There is a tool under development to support the creation of schema.org action annotations. It will be published on http://actions.semantify.it (currently has an older version and does not fully support WASA) soon. Until then, you can reach the [source code](https://github.com/semantifyit/api-actions) and try the development version on your own hardware. We also provide docker containers.
 
 # Use Case: Dialog Generation from API Annotations
 
