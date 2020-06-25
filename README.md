@@ -20,10 +20,24 @@ The WASA language sees Web APIs as a collection of actions that can be taken on 
 Below we first give some definitions of the notions that are used in this specification. Afterward, we first introduce the domain specification approach and domain-specific patterns. We follow with the relevant types and properties of schema.org for creating Web APIs defined with WASA. We also explain the usage of WASA language from a practical perspective with a running example and give some use cases for the potential usage of the action annotations.
 
 # Definitions
-<span id="def-wasa-api">
-  
 
-> **WASA API:** A collection of potential actions that are created according to WASA specification. 
+
+
+<span id="def-potential-action">
+
+**Potential Action**: The description of an operation that can be taken on a resource. 
+
+</span>
+
+<span id="def-active-action">
+
+**Request (Active Action)**: An action instance with that is created by a [WASA Client](#def-wasa-client) to be sent to a [WASA API](#def-wasa-api)
+
+</span>
+
+<span id="def-completed-failed-action">
+
+**Completed/Failed Action**: A response from a WASA API.
 
 </span>
 
@@ -31,6 +45,30 @@ Below we first give some definitions of the notions that are used in this specif
   
 
 > **Domain-specific pattern:** An extended restriction of the schema.org vocabulary specified with a SHACL Node Shape.
+
+</span>
+
+<span id="def-wasa-api">
+  
+
+> **WASA API:** A Web API that is a collection of potential actions that are created according to WASA specification. 
+
+</span>
+
+
+<span id="def-wasa-client">
+
+
+> **WASA Client:** A client that communicates with a WASA API. It processes a potential action and creates an active action based on the input specifications and constraints.
+
+</span>
+
+
+
+<span id="def-sparql-property-path">
+  
+
+> **SPARQL Property Path:** A route between two graph nodes as defined in [SPARQL 1.1 Specification](https://www.w3.org/TR/sparql11-query/#propertypaths).
 
 </span>
 
@@ -95,15 +133,6 @@ The PropertyValueSpecification type contains several properties that reflect the
 ## Potential Actions
 The schema.org vocabulary defines a potentialAction property that enables the connection of actions on instances. Informally, the instance to which an potential action is connected is the object of that action. We explain how potential actions are defined with WASA in the [Specification](#specification) section.
 
-# Conceptualization
-
-A schema.org action can have one of four statuses depending on its state. We map different stages of the client-API interaction to schema.org action statuses.
-
-**Operation Description (Potential Action)**: The description of an operation on a specific resource. This action is in **PotentialActionStatus**. 
-
-**Request (Active Action)**: An action instance with all required parameters (and possible optional) parameters are filled. This action is in **ActiveActionStatus**.
-
-**Response (Completed/Failed Action)**: A (lifted) response from the server to a request. This action instance is in **CompletedActionStatus** or **FailedActionStatus**.
 
 # Specification
 
@@ -229,7 +258,7 @@ The example below shows the _GetCurrentWeather_ action. Since it is an operation
     ]
   }
 ```
-<div id="caption-resource-operation" class="caption">Potential Action example</div>
+<div id="caption-potential-action" class="caption">Potential Action example</div>
 
 > _TODO_ update example with error and potentialActionLink properties.
 
@@ -280,7 +309,7 @@ The value of the `urlTemplate` property represents the endpoint to which a WASA 
 
 !> The endpoint may represent a single resource (e.g., _api.openweathermap.org/data/2.5/weather_) or the entire API as a graph, similar to the GraphQL approach (e.g., _action.semantify.it/api/openweather/action/_). In case of the entry point being a `wasa:SPARQLEndpoint` instance, then the `urlTemplate` property represents a SPARQL endpoint.
 
-The example below shows a target definition on the potential action in [Resource Operation Description example](#caption-resource-operation).
+The example below shows a target definition on the potential action in [Resource Operation Description example](#caption-potential-action).
 
 ```json
 //...
@@ -672,8 +701,69 @@ Similar to the input specification, the example below shows that _GetCurrentWeat
 
 ### Action Linking
 
-> _TODO_ put an example of action linking with geocoding api
+While annotating an API, two actions can be linked in two directions:
 
+* An action may use the result of another action. We call this a preceding action link.
+* An action may be attached to the result of another action. We call this a potential action link.
+
+In order to represent these two links, we define the `wasa:ActionLink` type and its subtype `wasa:PotentialActionLink`. 
+
+**Thing > Intangible > wasa:ActionLink**
+
+| Property             | Range| Description                                               |
+|----------------------------------|------------------|---------------------------------------------------------------------|
+| wasa:source                      | schema:Action    | The source action for the link                                      |
+| wasa:target                      | schema:Action    | The target action for the link                                      |
+| wasa:propertyMapping | wasa:PropertyMap | A mapping between the nodes of the source action and target action. |
+
+We define the `wasa:source` and `wasa:target` properties to specify the direction of linked actions. When a client is creating a request, the values of some properties of a result of the source action is assigned as property values of the object of another action. The mapping between the values of result and object properties is done via the `wasa:PropertyMap` type. 
+
+The wasa:PotentialActionLink type extends wasa:ActionLink with two properties:
+
+| Property             | Range            | Description                                                                                                    |
+|----------------------|------------------|----------------------------------------------------------------------------------------------------------------|
+| wasa:source          | schema:Action    | The source action for the link                                                                                 |
+| wasa:target          | schema:Action    | The target action for the link                                                                                 |
+| wasa:propertyMapping | wasa:PropertyMap | A mapping between the nodes of the source action and target action.                                            |
+| wasa:condition       | fno:Function     | The condition that needs to be satisfied by the instance selected by the iterator, to have a potential action. |
+| wasa:iterator        | schema:Text      | A [SPARQL Property Path](#def-sparql-property-path) that specifies the instance(s) to which the potential action should be attached.        |
+
+ A potential action attached on a response may be attached to any part of the value of the result property in the response. Therefore we define the `wasa:iterator` property to define the [SPARQL Property](#def-sparql-property-path) Path that indicates the node to which the potential action will be assigned. The `wasa:condition` property takes a boolean returning function as input and decides whether an instance should have a specific potential action (e.g., if there is a "withdraw" potential action defined on bank accounts, this action should be only available for the accounts that have a balance greater than zero).
+
+?> We use [Function Ontology](https://fno.io) to describe concrete function implementations that return boolean values for the specification potential actiton conditions. This is currently underspecified in WASA.
+
+The example below shows the specification of a _Preceeding Action Link_ for our [potential action example](#caption-potential-action). The _GetCurrentWeather_ action requires geo-location to return the current weather measurements at a location. In many cases, the geo-location must be obtained from an external source such as an end user device (e.g smartphone) or a Geocoding API based on a user input. The a preceding action link specifies how the output of an action is linked to the input of another action. Here we provide a city name to a Geocoding API and connect its output to the the input of _GetCurrentWeather_ potential action via `wasa:PropertyMap` instance.
+
+```json
+//...
+    "wasa:precedingActionLink": [
+      {
+        "@id": "/api/rdf/actionlink/f37289fa-d8d1-4b0d-912a-de6e96da0836",
+        "@type": "wasa:PrecedingActionLink",
+        "wasa:source": {
+          "@id": "/api/rdf/action/92552567-a10a-11ea-b5b6-3596ef396fa2"
+        },
+        "wasa:target": {
+          "@id": "/api/rdf/action/100665a8-a0de-11ea-8c03-c14ba487f916"
+        },
+        "wasa:propertyMapping": [
+          {
+            "@type": "wasa:PropertyMap",
+            "wasa:from": "<result>/<geo>/<latitude>",
+            "wasa:to": "<object>/<contentLocation>/<geo>/<latitude>"
+          },
+          {
+            "@type": "wasa:PropertyMap",
+            "wasa:from": "<result>/<geo>/<longitude>",
+            "wasa:to": "<object>/<contentLocation>/<geo>/<longitude>"
+          }
+        ]
+      }
+    ]
+
+//...
+
+```
 
 # Grounding and Lifting
 
@@ -690,16 +780,16 @@ Below we describe these two processes and a possible way of implementing them wi
 
 ## Lifting (Response Mapping)
 
-RML example
+> _TODO_ RML example
 
-> _TODO_ Check the Function Ontology from imec Gent for describing functions.
+> _TODO_ Function Ontology for describing functions
 
 
 # Tools
 
 There is a tool under development to support the creation of WASA APIs. It will be published on http://actions.semantify.it (currently has an older version and does not fully support WASA) soon. Until then, you can reach the [source code](https://github.com/semantifyit/api-actions) and try the development version on your own hardware. We also provide docker containers.
 
-# Use Case: Dialog Generation from API Annotations
+# Use Case: Dialog Generation from WASA APIs
 
 > _TODO_ link to uimo
 

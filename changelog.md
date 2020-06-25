@@ -7,6 +7,8 @@
 * completed authentication specification
 * completed output specification (result)
 * added initial tool section
+* added action links
+* refactored definitions section
 
 ### v0.4.0
 * added error specification
