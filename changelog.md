@@ -1,6 +1,9 @@
 ## Changelog {docsify-ignore}
 
 
+### v0.5.1
+* added brief explanation and link to the use cases
+
 ### v0.5.0
 * completed input specification (object)
 * added brief explanation for grounding and lifting

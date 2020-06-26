@@ -791,7 +791,7 @@ There is a tool under development to support the creation of WASA APIs. It will 
 
 # Use Case: Dialog Generation from WASA APIs
 
-> _TODO_ link to uimo
+WASA APIs can be used as fulfillment mechanisms for goal-oriented dialog systems. The details of how a WASA API can be used to decouple goal-oriented dialog systems from their backends can be found in the [Dialogical Access to Lightweight Semantic Web Services (DiALSWS) specification](http://dialsws.xyz).
 
 # Appendix 
 
