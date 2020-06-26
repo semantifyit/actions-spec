@@ -806,3 +806,8 @@ TBD
 # Acknowledgement
 
 # Publications
+
+## Tutorials
+
+1. [How To Build A Knowledge Graph, Tutorial at SEMANTICS 19, September 09, Karlsruhe, Germany, 2019](https://www.slideshare.net/STI-Innsbruck/how-to-build-a-knowledge-graph-236256713)
+2. [Building a Knowledge Graph from schema.org annotations, Tutorial at Knowledge Graph Conference, May 4, New York, NY, USA, 2020 (virtual)](https://www.slideshare.net/STI-Innsbruck/building-a-knowledge-graph-from-schemaorg-annotations-236256670)
